@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+  "name": "Xunlei To Aria2",
+  "short_name": "xta",
+  "description": "这个插件用于离线下载资源到 Aria2, 使用迅雷离线作为中转, 速度比较快",
+  "version": "1.0",
+  "icons": {
+    "128": "image/icon-128.png",
+    "48": "image/icon-48.png",
+    "16": "image/icon-16.png"
+  },
+  "permissions": [
+    "activeTab",
+    "contextMenus",
+    "cookies",
+    "http://*/",
+    "https://*/"
+  ],
+   "background": {
+    "scripts": ["js/jquery-3.1.0.min.js","js/xunleiapi.js","js/background.js"],
+    "persistent": false
+  },
+  "options_page": "options.html",
+  "browser_action": {
+    "default_icon": {
+      "19": "image/icon-19.png",
+      "38": "image/icon-38.png"
+    },
+    "default_title": "Xunlei To Aria2"
+  }
+}
