@@ -11,15 +11,21 @@
   },
   "permissions": [
     "activeTab",
+    "tabs",
     "contextMenus",
     "cookies",
-    "http://*/",
-    "https://*/"
+    "http://dynamic.cloud.vip.xunlei.com/"
   ],
    "background": {
-    "scripts": ["js/jquery-3.1.0.min.js","js/xunleiapi.js","js/background.js"],
+    "scripts": [
+      "js/jquery-3.1.0.min.js",
+      "js/xunleiapi.js",
+      "js/messagesend.js",
+      "js/background.js"
+    ],
     "persistent": false
   },
+
   "options_page": "options.html",
   "browser_action": {
     "default_icon": {

@@ -1,0 +1,68 @@
+.xunleitoaria2overlay {
+    background-color: rgba(0, 0, 0, 0.33);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    bottom:0px;
+    left:0px;
+    right:0px;
+    z-index: 10001;
+}
+.xunleitoaria2overlay>.box {
+    background-color: #f1f1f1;
+    width: 200px;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    margin-top: 5%;
+}
+.xunleitoaria2overlay>.box>.title{
+    text-align: center;
+    display: block;
+    font-size: 30px;
+}
+.xunleitoaria2overlay>.box>.yzmform{
+    margin-top: 10px;
+    padding: 5px;
+}
+.xunleitoaria2overlay>.box>.yzmform>.yzmimage{
+    width: 90px;
+    height:36px;
+}
+.xunleitoaria2overlay>.box>.yzmform>.yzminput{
+    width: 49px;
+    height: 30px;
+    margin: 0px;
+    margin-top: -29px;
+    margin-left:2px;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 17px;
+    color: #4893fb;
+    padding: 2px;
+}
+.xunleitoaria2overlay>.box>.yzmform>.yzmsubmit{
+    background-color: rgba(0,0,0,0);
+    color: #4893fb;
+    border-width: 1px;
+    border-image: none;
+    border-image-source: none;
+    border-style: solid;
+    border-color: #4893fb;
+    margin-left: 1px;
+    margin-top: -30px;
+    height: 36px;
+}
+.xunleitoaria2overlay>.box>.yzmform>.focus {
+    background-color: rgba(0,0,0,0);
+    color: #346cb9;
+    border-width: 1px;
+    border-image: none;
+    border-image-source: none;
+    border-style: solid;
+    border-color: #346cb9;
+    margin-left: 1px;
+    margin-top: -30px;
+    height: 36px;
+}
