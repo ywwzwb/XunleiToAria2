@@ -7,7 +7,15 @@ chrome.contextMenus.create({
     "title": "下载到 Aria2",
     "contexts": ["link", "image", "video", "audio"]
 });
+//初始化
+if (!localStorage.serverUrl) {
+    localStorage.serverUrl = "http://localhost:6800/jsonrpc";
+}
+if (!localStorage.downloadPath) {
+    localStorage.downloadPath = "/mnt/";
+}
 XunleiLiXian.init();
+ARIA2.init(localStorage.serverUrl);
 chrome.contextMenus.onClicked.addListener(function (info) {
     chrome.tabs.executeScript({
         file: "js/jquery-3.1.0.min.js"
@@ -18,23 +26,57 @@ chrome.contextMenus.onClicked.addListener(function (info) {
             chrome.tabs.insertCSS({
                 "file": "css/insert.css"
             }, function () {
-                MessageSend(0);
+                MessageSendToContentScript(0);
                 var url = info.srcUrl ? info.srcUrl : info.linkUrl;
                 XunleiLiXian.addTask(url);
             });
-
         })
     });
 });
 
-chrome.runtime.onMessage.addListener(function (request){
-    if(request.code == 0) {
-        //传过来的验证码
-        var yzm = request.message;
-        var taskInfo = request.taskInfo;
-        taskInfo.verify_code = yzm;
-        XunleiLiXian.commitMagnetTask(taskInfo);
+chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+        switch (request.code) {
+            case 100:
+                //设置 aria2 链接/ 测试服务器连接
+                if (request.message) {
+                    localStorage.serverUrl = request.message.url;
+                    localStorage.downloadPath = request.message.downloadPath;
+                }
+                ARIA2.init(localStorage.serverUrl, function () {
+                    ARIA2.get_version(function (version) {
+                        sendResponse({code: 1, message: version});
+                    }, function () {
+                        sendResponse({code: 0});
+                    });
+                }, function () {
+                    sendResponse({code: 0});
+                });
+                return true;//异步消息发送
+                break;
+
+            case 101:
+                //重置aria2 链接/ 测试服务器连接
+                localStorage.serverUrl = "http://localhost:6800/jsonrpc";
+                localStorage.downloadPath = "/mnt/";
+                sendResponse({
+                    code: 1,
+                    message: {serverUrl: localStorage.serverUrl, downloadPath: localStorage.downloadPath}
+                });
+                break;
+            case 102:
+                //获取配置
+                sendResponse({
+                    code: 1,
+                    message: {serverUrl: localStorage.serverUrl, downloadPath: localStorage.downloadPath}
+                });
+                break;
+            case 103:
+                //添加配置
+                Aria2.batch_request("addUri", )
+                break;
+            default:
+                break;
+        }
     }
-});
-
-
+);

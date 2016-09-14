@@ -21,6 +21,7 @@
       "js/jquery-3.1.0.min.js",
       "js/xunleiapi.js",
       "js/messagesend.js",
+      "js/aria2.js",
       "js/background.js"
     ],
     "persistent": false
