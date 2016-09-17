@@ -14,9 +14,9 @@ var ARIA2 = (function () {
     }
 
     return {
-        serverGood:false,
+        serverGood: false,
         init: function (path, onready, onerror) {
-            this.serverGood=false;
+            this.serverGood = false;
             wsUri = path;
             var auth_str = request_auth(wsUri);
             if (auth_str && auth_str.indexOf('token:') == 0) {
@@ -50,7 +50,7 @@ var ARIA2 = (function () {
                 };
 
                 websocket.onerror = function (event) {
-                    if(onerror){
+                    if (onerror) {
                         onerror();
                     }
                     ws_callback = {};
@@ -59,7 +59,7 @@ var ARIA2 = (function () {
                 websocket.onopen = function () {
                     ARIA2.request = ARIA2.request_ws;
                     ARIA2.batch_request = ARIA2.batch_request_ws;
-                    if (onready){
+                    if (onready) {
                         onready();
                     } else {
                         ARIA2.get_version();
@@ -114,7 +114,7 @@ var ARIA2 = (function () {
             ws_callback[id] = {
                 'success': success || function () {
                 },
-                'error': error || function(){
+                'error': error || function () {
 
                 }
             };
@@ -130,41 +130,52 @@ var ARIA2 = (function () {
             }
             websocket.send(JSON.stringify(data));
         },
-        batch_request: function (params, downloadDir, success, error) {
-            var data = [];
-            var id = ARIA2._get_unique_id();
-            ws_callback[id] = {
-                'success': success || function () {
-                },
-                'error': error || function(){
-
+        download: function (param, downloadDir, success, error) {
+            var aria2param = [
+                [param.url],
+                {
+                    out: param.name,
+                    header: param.header,
+                    dir: downloadDir
                 }
-            };
+            ];
+            ARIA2.request_ws("addUri", aria2param, success, error);
+        },
+        batch_download: function (params, downloadDir, success, error) {
+            var aria2params = [];
             for (var i = 0, l = params.length; i < l; i++) {
                 var n = params[i];
-                n = n || [];
-                if (!$.isArray(n))
-                    n = [n];
-                if (rpc_secret) {
-                    n.unshift(rpc_secret);
-                }
-                data.push(ARIA2._request_data(method, n, id));
+                var aria2param = [
+                    [n.url],
+                    {
+                        out: n.name,
+                        header: n.header,
+                        dir: downloadDir
+                    }
+                ];
+                aria2params.push(aria2param)
             }
-            websocket.send(JSON.stringify(data));
+            ARIA2.batch_request_ws("addUri", aria2params, success, error);
         },
         get_version: function (success, fail) {
             this.request("getVersion", [],
                 function (result) {
                     if (!result.result) {
-                        ARIA2.serverGood=false;
-                        if(fail){fail();}
+                        ARIA2.serverGood = false;
+                        if (fail) {
+                            fail();
+                        }
                     } else {
-                        ARIA2.serverGood=true;
-                        if(success){success(result.result.version);}
+                        ARIA2.serverGood = true;
+                        if (success) {
+                            success(result.result.version);
+                        }
                     }
-                },function () {
-                    ARIA2.serverGood=false;
-                    if(fail){fail();}
+                }, function () {
+                    ARIA2.serverGood = false;
+                    if (fail) {
+                        fail();
+                    }
                 }
             );
         }

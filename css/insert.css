@@ -21,6 +21,7 @@
     text-align: center;
     display: block;
     font-size: 30px;
+    line-height: 100%;
 }
 .xunleitoaria2overlay>.box>.yzmform{
     margin-top: 10px;
@@ -50,9 +51,9 @@
     border-image-source: none;
     border-style: solid;
     border-color: #4893fb;
-    margin-left: 1px;
-    margin-top: -30px;
+    margin: 1px;
     height: 36px;
+    position: fixed;
 }
 .xunleitoaria2overlay>.box>.yzmform>.focus {
     background-color: rgba(0,0,0,0);
@@ -62,7 +63,7 @@
     border-image-source: none;
     border-style: solid;
     border-color: #346cb9;
-    margin-left: 1px;
-    margin-top: -30px;
+    margin: 1px;
     height: 36px;
+    position: fixed;
 }

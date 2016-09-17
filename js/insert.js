@@ -1,8 +1,8 @@
 /**
  * Created by zengwenbin on 16/9/13.
  */
-if (window.isXuneleiToAria2MessageListener == undefined) {
-    window.isXuneleiToAria2MessageListener == true;
+if ($("#xunleitoaria2hidden").length == 0) {
+    $("<input id ='xunleitoaria2hidden' type = 'hidden'/>").appendTo($("body"));
     chrome.runtime.onMessage.addListener(function (request, sender, response) {
         switch (request.code) {
             case 0:
@@ -16,8 +16,19 @@ if (window.isXuneleiToAria2MessageListener == undefined) {
                 onXunleiDownloadFinish();
                 break;
             case 3:
+                onXunleiJB();
+                break;
+            case 4:
                 onXunleiDownloadDoing();
                 break;
+            case 5:
+                onAria2DownloadFinish();
+                break;
+            case 6:
+                onAria2DownloadFail();
+                break;
+            case 7:
+                onXunleiLoginFail();
             default:
                 break;
         }
@@ -29,6 +40,7 @@ function showDiv() {
         var box = $("<div class = 'box'>").appendTo(overlay);
         var title = $("<span class = 'title'>").appendTo(box).text("加载中")
     } else {
+        $("#xunleitoaria2div .title").text("加载中");
         $("#xunleitoaria2div").show();
     }
     $("body").css("overflow", "hidden");
@@ -49,8 +61,8 @@ function showYZMInput(response) {
     }
     $("#xunleitoaria2div .yzmsubmit").click(function () {
         $("#xunleitoaria2div .title").text("请稍后");
-            var yzm = $("#xunleitoaria2div .yzminput").val();
-            response({code : 0, message : yzm})
+        var yzm = $("#xunleitoaria2div .yzminput").val();
+        response({code: 0, message: yzm})
     });
     $("#xunleitoaria2div .title").text("输入验证码")
 }
@@ -58,11 +70,51 @@ function onXunleiDownloadFinish() {
     $("#xunleitoaria2div .title").text("添加到迅雷成功");
     $("#xunleitoaria2div>.box>.yzmform").hide();
 }
-function onXunleiDownloadDoing() {
-    $("#xunleitoaria2div .title").text("迅雷远程下载中");
+function onXunleiJB() {
+    $("#xunleitoaria2div .title").text("资源被举报了");
     $("#xunleitoaria2div>.box>.yzmform").hide();
-    setTimeout(function(){
+    setTimeout(function () {
         $("#xunleitoaria2div").hide();
         $("body").css("overflow", "auto");
-    },2000);
+    }, 2000);
+}
+function onXunleiDownloadDoing() {
+    $("#xunleitoaria2div .title").text("迅雷远程下载中, 请稍后再试");
+    $("#xunleitoaria2div>.box>.yzmform").hide();
+    setTimeout(function () {
+        $("#xunleitoaria2div").hide();
+        $("body").css("overflow", "auto");
+    }, 2000);
+}
+function onAria2DownloadFinish() {
+    $("#xunleitoaria2div .title").text("下载成功");
+    $("#xunleitoaria2div>.box>.yzmform").hide();
+    setTimeout(function () {
+        $("#xunleitoaria2div").hide();
+        $("body").css("overflow", "auto");
+    }, 2000);
+}
+function onAria2DownloadFail() {
+    $("#xunleitoaria2div .title").text("下载失败, 请检查设置");
+    $("#xunleitoaria2div>.box>.yzmform").hide();
+    setTimeout(function () {
+        $("#xunleitoaria2div").hide();
+        $("body").css("overflow", "auto");
+        if (chrome.runtime.openOptionsPage) {
+            // New way to open options pages, if supported (Chrome 42+).
+            chrome.runtime.openOptionsPage();
+        } else {
+            // Reasonable fallback.
+            window.open(chrome.runtime.getURL('options.html'));
+        }
+    }, 2000);
+}
+function onXunleiLoginFail() {
+    $("#xunleitoaria2div .title").text("请先登录");
+    $("#xunleitoaria2div>.box>.yzmform").hide();
+    setTimeout(function () {
+        $("#xunleitoaria2div").hide();
+        $("body").css("overflow", "auto");
+        window.open("http://lixian.xunlei.com", "_blank");
+    }, 2000);
 }

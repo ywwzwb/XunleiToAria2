@@ -14,8 +14,12 @@ if (!localStorage.serverUrl) {
 if (!localStorage.downloadPath) {
     localStorage.downloadPath = "/mnt/";
 }
-XunleiLiXian.init();
 ARIA2.init(localStorage.serverUrl);
+chrome.browserAction.onClicked.addListener(function () {
+    chrome.tabs.create({
+        url: "http://lixian.xunlei.com"
+    });
+});
 chrome.contextMenus.onClicked.addListener(function (info) {
     chrome.tabs.executeScript({
         file: "js/jquery-3.1.0.min.js"
@@ -70,10 +74,6 @@ chrome.runtime.onMessage.addListener(
                     code: 1,
                     message: {serverUrl: localStorage.serverUrl, downloadPath: localStorage.downloadPath}
                 });
-                break;
-            case 103:
-                //添加配置
-                Aria2.batch_request("addUri", )
                 break;
             default:
                 break;
