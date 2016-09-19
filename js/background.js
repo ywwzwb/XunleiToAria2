@@ -20,7 +20,7 @@ chrome.browserAction.onClicked.addListener(function () {
         url: "http://lixian.xunlei.com"
     });
 });
-chrome.contextMenus.onClicked.addListener(function (info) {
+chrome.contextMenus.onClicked.addListener(function (info, tab) {
     chrome.tabs.executeScript({
         file: "js/jquery-3.1.0.min.js"
     }, function () {
@@ -30,9 +30,11 @@ chrome.contextMenus.onClicked.addListener(function (info) {
             chrome.tabs.insertCSS({
                 "file": "css/insert.css"
             }, function () {
-                MessageSendToContentScript(0);
                 var url = info.srcUrl ? info.srcUrl : info.linkUrl;
-                XunleiLiXian.addTask(url);
+                var task = Task.init();
+                task.url = url;
+                task.tabid = tab.id;
+                TaskQueue.shareQueue().addTaskToQueue(task).doTask();
             });
         })
     });

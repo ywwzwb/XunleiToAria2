@@ -22,13 +22,14 @@ if ($("#xunleitoaria2hidden").length == 0) {
                 onXunleiDownloadDoing();
                 break;
             case 5:
-                onAria2DownloadFinish();
+                onXunleiLoginFail();
                 break;
             case 6:
-                onAria2DownloadFail();
+                onAria2DownloadFinish();
                 break;
             case 7:
-                onXunleiLoginFail();
+                onAria2DownloadFail();
+                break;
             default:
                 break;
         }
