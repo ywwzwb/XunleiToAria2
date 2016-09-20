@@ -79,9 +79,11 @@ var XunleiAPI = {
                     } else if (output.progress == 2) {
                         //资源被举报
                         task.sendMessageToConentScript(ContentMessageCode.xunleiZYJB);
+                        callback();
                     } else {
                         //还没完成
                         task.sendMessageToConentScript(ContentMessageCode.xunleiDownloading);
+                        callback();
                     }
                 }
             });
@@ -185,6 +187,7 @@ var XunleiAPI = {
                     } else if (output[0] == 2) {
                         //资源被举报
                         task.sendMessageToConentScript(ContentMessageCode.xunleiZYJB);
+                        callback();
                     }
                 }
             });
@@ -215,20 +218,25 @@ var XunleiAPI = {
                         });
                         if (taskjson && taskjson.progress == 100 && taskjson.lixian_url) {
                              aria2Tasks.push({
-                                name: task.taskname.replace(/\\/g, ""),
+                                name: taskjson.taskname.replace(/\\/g, ""),
                                 header: "Cookie:" + XunleiAPI.xunleiGDriverID,
-                                url: task.lixian_url
+                                url: taskjson.lixian_url
                             });
                             callback()
                         } else {
                             //还没完成
                             task.sendMessageToConentScript(ContentMessageCode.xunleiDownloading);
+                            callback();
                         }
                     }
                 }
             )
         };
         var startAria2Download = function () {
+            if(aria2Tasks.length == 0){
+                firstTask.sendMessageToConentScript(ContentMessageCode.taskEnd);
+                return;
+            }
             ARIA2.batch_download(aria2Tasks, localStorage.downloadPath, function () {
                 firstTask.sendMessageToConentScript(ContentMessageCode.aria2DownloadFinish);
                 firstTask.sendMessageToConentScript(ContentMessageCode.taskEnd);

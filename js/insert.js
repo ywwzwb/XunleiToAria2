@@ -30,6 +30,9 @@ if ($("#xunleitoaria2hidden").length == 0) {
             case 7:
                 onAria2DownloadFail();
                 break;
+            case 8:
+                onTaskDone();
+                break;
             default:
                 break;
         }
@@ -74,48 +77,34 @@ function onXunleiDownloadFinish() {
 function onXunleiJB() {
     $("#xunleitoaria2div .title").text("资源被举报了");
     $("#xunleitoaria2div>.box>.yzmform").hide();
-    setTimeout(function () {
-        $("#xunleitoaria2div").hide();
-        $("body").css("overflow", "auto");
-    }, 2000);
 }
 function onXunleiDownloadDoing() {
     $("#xunleitoaria2div .title").text("迅雷远程下载中, 请稍后再试");
     $("#xunleitoaria2div>.box>.yzmform").hide();
-    setTimeout(function () {
-        $("#xunleitoaria2div").hide();
-        $("body").css("overflow", "auto");
-    }, 2000);
 }
 function onAria2DownloadFinish() {
     $("#xunleitoaria2div .title").text("下载成功");
     $("#xunleitoaria2div>.box>.yzmform").hide();
-    setTimeout(function () {
-        $("#xunleitoaria2div").hide();
-        $("body").css("overflow", "auto");
-    }, 2000);
 }
 function onAria2DownloadFail() {
     $("#xunleitoaria2div .title").text("下载失败, 请检查设置");
     $("#xunleitoaria2div>.box>.yzmform").hide();
     setTimeout(function () {
-        $("#xunleitoaria2div").hide();
-        $("body").css("overflow", "auto");
-        if (chrome.runtime.openOptionsPage) {
-            // New way to open options pages, if supported (Chrome 42+).
-            chrome.runtime.openOptionsPage();
-        } else {
-            // Reasonable fallback.
-            window.open(chrome.runtime.getURL('options.html'));
-        }
-    }, 2000);
+        chrome.runtime.sendMessage({
+            code: 300//open setting page
+        });
+    }, 1000);
 }
 function onXunleiLoginFail() {
     $("#xunleitoaria2div .title").text("请先登录");
     $("#xunleitoaria2div>.box>.yzmform").hide();
     setTimeout(function () {
+        window.open("http://lixian.xunlei.com", "_blank");
+    }, 1000);
+}
+function onTaskDone() {
+    setTimeout(function () {
         $("#xunleitoaria2div").hide();
         $("body").css("overflow", "auto");
-        window.open("http://lixian.xunlei.com", "_blank");
     }, 2000);
 }
