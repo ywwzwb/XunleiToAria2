@@ -34,7 +34,7 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
                 var task = Task.init();
                 task.url = url;
                 task.tabid = tab.id;
-                TaskQueue.shareQueue().addTaskToQueue(task).doTask();
+                task.doTask();
             });
         })
     });
@@ -76,6 +76,46 @@ chrome.runtime.onMessage.addListener(
                     code: 1,
                     message: {serverUrl: localStorage.serverUrl, downloadPath: localStorage.downloadPath}
                 });
+                break;
+            case 200:
+                //迅雷页面单普通任务下载
+                var task = Task.init();
+                task.url = request.message.url;
+                task.tabid = sender.tab.id;
+                task.isLixanUrl = true;
+                task.taskname = request.message.taskname;
+                task.doTask();
+                break;
+            case 201:
+                //迅雷页面单bt任务下载
+                var task = Task.init();
+                task.url = undefined;
+                task.tabid = sender.tab.id;
+                task.btTaskID = request.message.id;
+                task.taskname = request.message.taskname;
+                task.doTask();
+                break;
+            case 202:
+                //迅雷页面批量任务下载
+                var tasks = [];
+                for (var i in request.message) {
+                    var info = request.message[i];
+                    var task = Task.init();
+                    task.url = info["url"];
+                    task.tabid = sender.tab.id;
+                    task.btTaskID = info["id"];
+                    task.taskname = info["taskname"];
+                    if (task.url) {
+                        task.isLixanUrl = true;
+                    }
+                    tasks.push(task);
+                }
+                tasks[0].sendMessageToConentScript(ContentMessageCode.taskStart);
+                XunleiAPI.init(tasks).doTasks();
+                break;
+
+            case 300:
+                chrome.runtime.openOptionsPage();
                 break;
             default:
                 break;

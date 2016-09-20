@@ -3,8 +3,14 @@
  */
 
 $(function () {
+    function messageSendToBackground(code, message, response) {
+        chrome.runtime.sendMessage({
+            code: code,
+            message: message
+        }, response);
+    }
     function init() {
-        MessageSendToBackground(102, null, function (response) {
+        messageSendToBackground(102, null, function (response) {
             $('#serverUrl').val(response.message.serverUrl);
             $('#downloadPath').val(response.message.downloadPath);
             testServer();
@@ -23,7 +29,7 @@ $(function () {
                 $("#server_version").html(", 连接到服务器中");
             }
         }, 200);
-        MessageSendToBackground(100, setting, function (response) {
+        messageSendToBackground(100, setting, function (response) {
             if (response.code == 0) {
                 clearInterval(updatetimer);
                 $("#server_version").html(", 服务器连接失败").addClass(".red");
@@ -42,7 +48,7 @@ $(function () {
         testServer({url: serverUrl, downloadPath: downloadPath});
     });
     $("#reset").click(function () {
-        MessageSendToBackground(101, null, function (response) {
+        messageSendToBackground(101, null, function (response) {
             $('#serverUrl').val(response.message.serverUrl);
             $('#downloadPath').val(response.message.downloadPath);
             testServer()

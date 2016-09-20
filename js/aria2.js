@@ -32,13 +32,16 @@ var ARIA2 = (function () {
                 websocket = new WebSocket(wsUri);
                 websocket.onmessage = function (event) {
                     var data = JSON.parse(event.data);
-                    if ($.isArray(data) && data.length) {
+                    if ($.isArray(data) && data.length && data[0].result) {
                         var id = data[0].id;
                         if (ws_callback[id]) {
                             ws_callback[id].success(data);
                             delete ws_callback[id];
                         }
                     } else {
+                        if ($.isArray(data)){
+                            data = data[0];
+                        }
                         if (ws_callback[data.id]) {
                             if (data.error)
                                 ws_callback[data.id].error(data);

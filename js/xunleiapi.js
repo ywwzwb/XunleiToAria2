@@ -5,8 +5,13 @@ var XunleiAPI = {
     xunleiUserID: undefined,
     xunleiGDriverID: undefined,
     CookieURL: 'http://dynamic.cloud.vip.xunlei.com/',
-    init: function (task) {
-        var doMagnetTask = function () {
+    init: function (tasks) {
+        if (!(tasks instanceof Array)) {
+            tasks = [tasks]
+        }
+        var aria2Tasks = [];
+        var firstTask = undefined;
+        var doMagnetTask = function (callback, task) {
             var cacheTime = Math.floor((new Date).getTime() / 1000);
             $.ajax({
                 url: "http://dynamic.cloud.vip.xunlei.com/interface/url_query",
@@ -15,13 +20,14 @@ var XunleiAPI = {
                     random: cacheTime.toString(),
                     tcache: cacheTime.toString() + "1",
                     callback: 'queryUrl',
-                    u: instance.task.url
+                    u: task.url
                 },
                 success: function (output, status, xhr) {
                     if (!output.startsWith("queryUrl")) {
                         XunleiAPI.xunleiUserID = undefined;
-                        instance.task.sendMessageToConentScript(ContentMessageCode.xunleiloginFail);
-                        TaskQueue.shareQueue().removeTask(instance.task);
+                        task.sendMessageToConentScript(ContentMessageCode.xunleiloginFail);
+                        instance.tasks =[];
+                        task.sendMessageToConentScript(ContentMessageCode.taskEnd);
                         return
                     }
                     var taskinfo = function () {
@@ -46,13 +52,13 @@ var XunleiAPI = {
                         param.o_page = "task";
                         param.class_id = "0";
                         param.interfrom = "task";
-                        return param
+                        return param;
                     }();
-                    commitMagnetTask(taskinfo)
+                    commitMagnetTask(taskinfo, callback, task);
                 }
             });
         };
-        var commitMagnetTask = function (taskinfo) {
+        var commitMagnetTask = function (taskinfo, callback, task) {
             $.ajax({
                 url: "http://dynamic.cloud.vip.xunlei.com/interface/bt_task_commit",
                 type: "POST",
@@ -62,27 +68,25 @@ var XunleiAPI = {
                     output = JSON.parse(output.substr(1, output.length - 2));
                     if (output.progress == -12 || output.progress == -11) {
                         // -12 表示需要输入验证码, -11 表示验证码错误
-                        instance.task.sendMessageToConentScript(ContentMessageCode.xunleiShowYZM, undefined, function (response) {
+                        task.sendMessageToConentScript(ContentMessageCode.xunleiShowYZM, undefined, function (response) {
                             taskinfo.verify_code = response.message;
-                            commitMagnetTask(taskinfo)
+                            commitMagnetTask(taskinfo, callback, task);
                         });
                     } else if (output.progress == 1) {
                         //下载完成
-                        instance.task.sendMessageToConentScript(ContentMessageCode.xunleiDownloadFinish);
-                        getMagnetTaskInfo(output.id, taskinfo.btname)
+                        task.sendMessageToConentScript(ContentMessageCode.xunleiDownloadFinish);
+                        getMagnetTaskInfo(output.id, taskinfo.btname, callback, task)
                     } else if (output.progress == 2) {
                         //资源被举报
-                        instance.task.sendMessageToConentScript(ContentMessageCode.xunleiZYJB);
-                        TaskQueue.shareQueue().removeTask(instance.task);
+                        task.sendMessageToConentScript(ContentMessageCode.xunleiZYJB);
                     } else {
                         //还没完成
-                        instance.task.sendMessageToConentScript(ContentMessageCode.xunleiDownloading);
-                        TaskQueue.shareQueue().removeTask(instance.task);
+                        task.sendMessageToConentScript(ContentMessageCode.xunleiDownloading);
                     }
                 }
             });
         };
-        var getMagnetTaskInfo = function (id, btname) {
+        var getMagnetTaskInfo = function (id, btname, callback, task) {
             $.ajax({
                 url: "http://dynamic.cloud.vip.xunlei.com/interface/fill_bt_list",
                 type: "GET",
@@ -95,13 +99,7 @@ var XunleiAPI = {
                 success: function (output, status, xhr) {
                     //{"id":"1540202127827456","avail_space":"1123741114859670","time":1.0901968479156,"progress":1})
                     output = JSON.parse(output.substring(7, output.length - 1));
-                    if (XunleiAPI.xunleiGDriverID == undefined) {
-                        instance.task.sendMessageToConentScript(ContentMessageCode.xunleiloginFail);
-                        TaskQueue.shareQueue().removeTask(instance.task);
-                        return
-                    }
                     var tasks = output.Result[id];
-                    var aria2Tasks = [];
                     $.each(tasks, function () {
                         aria2Tasks.push({
                             name: (btname + "/" + this.title).replace(/\\/g, ""),
@@ -109,17 +107,11 @@ var XunleiAPI = {
                             url: this.downurl
                         })
                     });
-                    ARIA2.batch_download(aria2Tasks, localStorage.downloadPath, function () {
-                        instance.task.sendMessageToConentScript(ContentMessageCode.aria2DownloadFinish);
-                        TaskQueue.shareQueue().removeTask(instance.task);
-                    }, function () {
-                        instance.task.sendMessageToConentScript(ContentMessageCode.aria2DownloadFail);
-                        TaskQueue.shareQueue().removeTask(instance.task);
-                    });
+                    callback()
                 }
             });
         };
-        var doNormalTask = function () {
+        var doNormalTask = function (callback, task) {
             var cacheTime = Math.floor((new Date).getTime() / 1000);
             $.ajax({
                     url: "http://dynamic.cloud.vip.xunlei.com/interface/task_check",
@@ -127,13 +119,14 @@ var XunleiAPI = {
                     data: {
                         random: cacheTime.toString(),
                         tcache: cacheTime.toString() + "1",
-                        url: instance.task.url
+                        url: task.url
                     },
                     success: function (output, status, xhr) {
                         if (!output.startsWith("queryCid")) {
                             XunleiAPI.xunleiUserID = undefined;
-                            instance.task.sendMessageToConentScript(ContentMessageCode.xunleiloginFail);
-                            TaskQueue.shareQueue().removeTask(instance.task);
+                            task.sendMessageToConentScript(ContentMessageCode.xunleiloginFail);
+                            instance.tasks = [];
+                            task.sendMessageToConentScript(ContentMessageCode.taskEnd);
                             return
                         }
                         var taskinfo = function () {
@@ -147,10 +140,10 @@ var XunleiAPI = {
                             param.silverbean = 0;
                             param.goldbean = 0;
                             param.t = json[4];
-                            param.url = instance.task.url;
-                            if (instance.task.url.startsWith("thunder://")) {
+                            param.url = task.url;
+                            if (task.url.startsWith("thunder://")) {
                                 param.type = 3;
-                            } else if (instance.task.url.startsWith("ed2k://")) {
+                            } else if (task.url.startsWith("ed2k://")) {
                                 param.type = 2;
                             } else {
                                 param.type = 0
@@ -165,12 +158,12 @@ var XunleiAPI = {
                             param.time = new Date().toString();
                             return param
                         }();
-                        normalTaskCommit(taskinfo)
+                        normalTaskCommit(taskinfo, callback, task)
                     }
                 }
             );
         };
-        var normalTaskCommit = function (taskinfo) {
+        var normalTaskCommit = function (taskinfo, callback, task) {
             $.ajax({
                 url: "http://dynamic.cloud.vip.xunlei.com/interface/task_commit",
                 type: "GET",
@@ -182,22 +175,21 @@ var XunleiAPI = {
                     //
                     if (output[0] == -12 || output[0] == -11) {
                         // -12 表示需要输入验证码, -11 表示验证码错误
-                        instance.task.sendMessageToConentScript(ContentMessageCode.xunleiShowYZM, undefined, function (response) {
+                        task.sendMessageToConentScript(ContentMessageCode.xunleiShowYZM, undefined, function (response) {
                             taskinfo.verify_code = response.message;
-                            normalTaskCommit(taskinfo)
+                            normalTaskCommit(taskinfo, callback, task);
                         });
                     } else if (output[0] == 1) {
-                        instance.task.sendMessageToConentScript(ContentMessageCode.xunleiDownloadFinish);
-                        getNormalTaskInfo(taskinfo.cid, output[1]);
+                        task.sendMessageToConentScript(ContentMessageCode.xunleiDownloadFinish);
+                        getNormalTaskInfo(taskinfo.cid, output[1], callback, task);
                     } else if (output[0] == 2) {
                         //资源被举报
-                        instance.task.sendMessageToConentScript(ContentMessageCode.xunleiZYJB);
-                        TaskQueue.shareQueue().removeTask(instance.task);
+                        task.sendMessageToConentScript(ContentMessageCode.xunleiZYJB);
                     }
                 }
             });
         };
-        var getNormalTaskInfo = function (cid, id) {
+        var getNormalTaskInfo = function (cid, id, callback, task) {
             //http://dynamic.cloud.vip.xunlei.com/interface/showtask_unfresh?callback=jsonp1470122229847&t=Tue%20Aug%2002%202016%2015:18:58%20GMT+0800&type_id=4&page=1&tasknum=1&p=1&interfrom=task
             $.ajax({
                     url: "http://dynamic.cloud.vip.xunlei.com/interface/showtask_unfresh",
@@ -214,44 +206,72 @@ var XunleiAPI = {
                     success: function (output, status, xhr) {
                         var json = JSON.parse(output.substring(7, output.length - 1));
                         var tasks = json.info.tasks;
-                        var task = undefined;
+                        var taskjson = undefined;
                         $.each(tasks, function () {
-                            if ((cid != 0 && this.cid == cid ) || (id != 0 && this.id == id) || (this.url == instance.task.url)) {
-                                task = this;
+                            if ((cid != 0 && this.cid == cid ) || (id != 0 && this.id == id) || (this.url == task.url)) {
+                                taskjson = this;
                                 return false;
                             }
                         });
-                        if (task && task.progress == 100 && task.lixian_url) {
-                            if (XunleiAPI.xunleiGDriverID == undefined) {
-                                instance.task.sendMessageToConentScript(ContentMessageCode.xunleiloginFail);
-                                TaskQueue.shareQueue().removeTask(instance.task);
-                                return
-                            }
-                            var aria2Task = {
+                        if (taskjson && taskjson.progress == 100 && taskjson.lixian_url) {
+                             aria2Tasks.push({
                                 name: task.taskname.replace(/\\/g, ""),
                                 header: "Cookie:" + XunleiAPI.xunleiGDriverID,
                                 url: task.lixian_url
-                            };
-                            ARIA2.download(aria2Task, localStorage.downloadPath, function () {
-                                instance.task.sendMessageToConentScript(ContentMessageCode.aria2DownloadFinish);
-                                TaskQueue.shareQueue().removeTask(instance.task);
-                            }, function () {
-                                instance.task.sendMessageToConentScript(ContentMessageCode.aria2DownloadFail);
-                                TaskQueue.shareQueue().removeTask(instance.task);
                             });
+                            callback()
                         } else {
                             //还没完成
-                            instance.task.sendMessageToConentScript(ContentMessageCode.xunleiDownloading);
-                            TaskQueue.shareQueue().removeTask(instance.task);
+                            task.sendMessageToConentScript(ContentMessageCode.xunleiDownloading);
                         }
                     }
                 }
             )
         };
-
+        var startAria2Download = function () {
+            ARIA2.batch_download(aria2Tasks, localStorage.downloadPath, function () {
+                firstTask.sendMessageToConentScript(ContentMessageCode.aria2DownloadFinish);
+                firstTask.sendMessageToConentScript(ContentMessageCode.taskEnd);
+            }, function () {
+                firstTask.sendMessageToConentScript(ContentMessageCode.aria2DownloadFail);
+                firstTask.sendMessageToConentScript(ContentMessageCode.taskEnd);
+            });
+        };
+        var _doTask = function () {
+            if (XunleiAPI.xunleiGDriverID == undefined || XunleiAPI.xunleiUserID == undefined){
+                tasks = [];
+                firstTask.sendMessageToConentScript(ContentMessageCode.xunleiloginFail);
+                firstTask.sendMessageToConentScript(ContentMessageCode.taskEnd);
+                return;
+            }
+            var task = instance.tasks.pop();
+            if (task == undefined) {
+                startAria2Download();
+                return;
+            }
+            if (task.isLixanUrl) {
+                aria2Tasks.push({
+                    name: task.taskname.replace(/\\/g, ""),
+                    header: "Cookie:" + XunleiAPI.xunleiGDriverID,
+                    url: task.url
+                });
+                _doTask();
+            } else if (task.btTaskID) {
+                getMagnetTaskInfo(task.btTaskID, task.taskname, _doTask, task);
+            } else if (task.url.startsWith("magnet:?xt")) {
+                doMagnetTask(_doTask, task);
+            } else {
+                doNormalTask(_doTask, task);
+            }
+        };
         var instance = {};
-        instance.task = task;
-        instance.doTask = function () {
+        instance.tasks = tasks;
+        firstTask = tasks[0];
+        instance.doTasks = function () {
+            if (instance.tasks.length == 0){
+                firstTask.sendMessageToConentScript(ContentMessageCode.taskEnd);
+                return;
+            }
             if (XunleiAPI.xunleiUserID == undefined || XunleiAPI.xunleiGDriverID == undefined) {
                 chrome.cookies.get({
                     "url": XunleiAPI.CookieURL,
@@ -263,19 +283,11 @@ var XunleiAPI = {
                         "name": "gdriveid"
                     }, function (cookie) {
                         XunleiAPI.xunleiGDriverID = cookie.value;
-                        if (instance.task.url.startsWith("magnet:?xt")) {
-                            doMagnetTask();
-                        } else {
-                            doNormalTask();
-                        }
+                        _doTask();
                     });
                 });
             } else {
-                if (instance.task.url.startsWith("magnet:?xt")) {
-                    doMagnetTask();
-                } else {
-                    doNormalTask();
-                }
+                _doTask();
             }
         };
         return instance;
