@@ -14,7 +14,7 @@ if (!localStorage.serverUrl) {
 if (!localStorage.downloadPath) {
     localStorage.downloadPath = "/mnt/";
 }
-ARIA2.init(localStorage.serverUrl);
+Aria2.shareAria2().setUrl(localStorage.serverUrl);
 chrome.browserAction.onClicked.addListener(function () {
     chrome.tabs.create({
         url: "http://lixian.xunlei.com"
@@ -49,20 +49,18 @@ chrome.runtime.onMessage.addListener(
                     localStorage.serverUrl = request.message.url;
                     localStorage.downloadPath = request.message.downloadPath;
                 }
-                ARIA2.init(localStorage.serverUrl, function () {
-                    ARIA2.get_version(function (version) {
-                        sendResponse({code: 1, message: version});
-                    }, function () {
+                Aria2.shareAria2().setUrl(localStorage.serverUrl, function(serverOk, message){
+                    if (serverOk){
+                        sendResponse({code: 1, message: message});
+                    } else {
                         sendResponse({code: 0});
-                    });
-                }, function () {
-                    sendResponse({code: 0});
+                    }
                 });
                 return true;//异步消息发送
                 break;
 
             case 101:
-                //重置aria2 链接/ 测试服务器连接
+                //重置aria2 链接
                 localStorage.serverUrl = "http://localhost:6800/jsonrpc";
                 localStorage.downloadPath = "/mnt/";
                 sendResponse({

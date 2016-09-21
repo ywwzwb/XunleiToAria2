@@ -237,7 +237,7 @@ var XunleiAPI = {
                 firstTask.sendMessageToConentScript(ContentMessageCode.taskEnd);
                 return;
             }
-            ARIA2.batch_download(aria2Tasks, localStorage.downloadPath, function () {
+            Aria2.shareAria2().batchDownload(aria2Tasks, localStorage.downloadPath, function () {
                 firstTask.sendMessageToConentScript(ContentMessageCode.aria2DownloadFinish);
                 firstTask.sendMessageToConentScript(ContentMessageCode.taskEnd);
             }, function () {

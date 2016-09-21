@@ -15,7 +15,7 @@
     "cookies",
     "http://dynamic.cloud.vip.xunlei.com/"
   ],
-   "background": {
+  "background": {
     "scripts": [
       "js/jquery-3.1.0.min.js",
       "js/aria2.js",
@@ -31,9 +31,18 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://dynamic.cloud.vip.xunlei.com/*"],
-      "css": ["css/xunlei-insert.css", "css/insert.css"],
-      "js": ["js/jquery-3.1.0.min.js", "js/xunlei-insert.js"]
+      "matches": [
+        "http://dynamic.cloud.vip.xunlei.com/*"
+      ],
+      "css": [
+        "css/xunlei-insert.css",
+        "css/insert.css"
+      ],
+      "js": [
+        "js/jquery-3.1.0.min.js",
+        "js/xunlei-insert.js"
+      ],
+      "run_at": "document_end"
     }
   ],
   "browser_action": {

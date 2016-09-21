@@ -32,7 +32,7 @@ $(function () {
             });
         }
     });
-    $(".rw_list,#ckbutton,.in_ztclick").click(function () {
+    $(document).on('click', '.rw_list,#ckbutton,.in_ztclick', function () {
         var checkedOkItem = $(".in_ztclick:checked").parents(".rw_list").find(".rwicok").parents(".rw_list");
         if (checkedOkItem.length == 0) {
             btn.addClass("noit");
@@ -43,7 +43,7 @@ $(function () {
     });
     function onrw_listClicked(item) {
         var btnContainer = $(item).find(".rwset");
-        var finish = $(item).find(".loadnum").text() == "100%";
+        var finish = $(item).find(".rwicok").length > 0;
         if (btnContainer.children(".downloadToAria2").length == 0 && finish) {
             var downloadBtn = $("<a href='#' class='rwbtn downloadtoariabtn downloadToAria2' title='下载到 Aria2'>下载到 Aria2</a>").prependTo(btnContainer);
             downloadBtn.click(function () {
@@ -71,7 +71,7 @@ $(function () {
         }
     }
 
-    $(".rw_list").click(function () {
+    $(document).on('click', '.rw_list', function () {
         onrw_listClicked(this);
     });
     onrw_listClicked($(".rw_list:first"));
