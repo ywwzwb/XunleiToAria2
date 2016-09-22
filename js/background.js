@@ -7,6 +7,9 @@ chrome.contextMenus.create({
     "title": "下载到 Aria2",
     "contexts": ["link", "image", "video", "audio"]
 });
+chrome.runtime.onInstalled.addListener(function(previousVersion){
+    chrome.runtime.openOptionsPage();
+});
 //初始化
 if (!localStorage.serverUrl) {
     localStorage.serverUrl = "http://localhost:6800/jsonrpc";
