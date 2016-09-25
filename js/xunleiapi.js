@@ -74,15 +74,10 @@ var XunleiAPI = {
                         });
                     } else if (output.progress == 1) {
                         //下载完成
-                        task.sendMessageToConentScript(ContentMessageCode.xunleiDownloadFinish);
                         getMagnetTaskInfo(output.id, taskinfo.btname, callback, task)
-                    } else if (output.progress == 2) {
+                    } else {
                         //资源被举报
                         task.sendMessageToConentScript(ContentMessageCode.xunleiZYJB);
-                        callback();
-                    } else {
-                        //还没完成
-                        task.sendMessageToConentScript(ContentMessageCode.xunleiDownloading);
                         callback();
                     }
                 }
@@ -101,6 +96,12 @@ var XunleiAPI = {
                 success: function (output, status, xhr) {
                     //{"id":"1540202127827456","avail_space":"1123741114859670","time":1.0901968479156,"progress":1})
                     output = JSON.parse(output.substring(7, output.length - 1));
+                    if ((output instanceof Arrary ) && output.length == 0){
+                        //还没完成
+                        task.sendMessageToConentScript(ContentMessageCode.xunleiDownloading);
+                        callback();
+                    }
+                    task.sendMessageToConentScript(ContentMessageCode.xunleiDownloadFinish);
                     var tasks = output.Result[id];
                     $.each(tasks, function () {
                         aria2Tasks.push({
