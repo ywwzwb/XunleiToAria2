@@ -168,6 +168,10 @@ var Aria2 = {
         instance.download = function (param, downloadDir, success, fail) {
             var aria2param = undefined;
             if (downloadDir && downloadDir.length > 0) {
+                downloadDir = downloadDir.replace(/\\/g, "/");
+                if (downloadDir.endsWith("/")) {
+                    downloadDir = downloadDir.substr(0, downloadDir.length - 1);
+                }
                 aria2param = [
                     [param.url],
                     {
@@ -189,9 +193,13 @@ var Aria2 = {
         };
         instance.batchDownload = function (params, downloadDir, success, fail) {
             var aria2params = [];
-            for (var i = 0, l = params.length; i < l; i++) {
-                var n = params[i];
-                if (downloadDir && downloadDir.length > 0) {
+            if (downloadDir && downloadDir.length > 0) {
+                downloadDir = downloadDir.replace(/\\/g, "/");
+                if (downloadDir.endsWith("/")) {
+                    downloadDir = downloadDir.substr(0, downloadDir.length - 1);
+                }
+                for (var i = 0, l = params.length; i < l; i++) {
+                    var n = params[i];
                     aria2params.push([
                         [n.url],
                         {
@@ -200,7 +208,10 @@ var Aria2 = {
                             dir: downloadDir
                         }
                     ]);
-                } else {
+                }
+            } else {
+                for (var i = 0, l = params.length; i < l; i++) {
+                    var n = params[i];
                     aria2params.push([
                         [n.url],
                         {

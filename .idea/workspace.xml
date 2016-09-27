@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e822d445-3753-4c23-9728-cf8515f8a402" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/aria2.js" afterPath="$PROJECT_DIR$/js/aria2.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/background.js" afterPath="$PROJECT_DIR$/js/background.js" />
     </list>
     <ignored path="xunleitoaria2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -26,11 +24,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="background.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="background.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/background.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="40" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
+            <state relative-caret-position="-360">
+              <caret line="15" column="38" selection-start-line="15" selection-start-column="38" selection-end-line="15" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -56,16 +54,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="aria2.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="aria2.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/aria2.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="241">
-              <caret line="169" column="56" selection-start-line="169" selection-start-column="56" selection-end-line="169" selection-end-column="56" />
+            <state relative-caret-position="160">
+              <caret line="198" column="80" selection-start-line="198" selection-start-column="80" selection-end-line="198" selection-end-column="80" />
               <folding>
                 <element signature="e#550#588#0" expanded="false" />
                 <element signature="e#3580#4361#0" expanded="false" />
-                <element signature="e#4441#5549#0" expanded="false" />
-                <element signature="e#7556#7698#0" expanded="false" />
+                <element signature="e#8100#8242#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -102,8 +99,8 @@
         <option value="$PROJECT_DIR$/js/task.js" />
         <option value="$PROJECT_DIR$/js/insert.js" />
         <option value="$PROJECT_DIR$/js/xunleiapi.js" />
-        <option value="$PROJECT_DIR$/js/aria2.js" />
         <option value="$PROJECT_DIR$/js/background.js" />
+        <option value="$PROJECT_DIR$/js/aria2.js" />
       </list>
     </option>
   </component>
@@ -114,8 +111,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="46" />
-    <option name="y" value="23" />
+    <option name="x" value="-81" />
+    <option name="y" value="69" />
     <option name="width" value="1229" />
     <option name="height" value="773" />
   </component>
@@ -443,7 +440,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="46" y="23" width="1229" height="773" extended-state="6" />
+    <frame x="-81" y="69" width="1229" height="773" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3049705" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -519,8 +516,7 @@
           <folding>
             <element signature="e#550#588#0" expanded="false" />
             <element signature="e#3580#4361#0" expanded="false" />
-            <element signature="e#4441#5549#0" expanded="false" />
-            <element signature="e#7556#7698#0" expanded="false" />
+            <element signature="e#8100#8242#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -545,9 +541,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="855">
           <caret line="103" column="85" selection-start-line="103" selection-start-column="85" selection-end-line="103" selection-end-column="85" />
-          <folding>
-            <element signature="e#404#2724#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -574,8 +568,7 @@
           <folding>
             <element signature="e#550#588#0" expanded="false" />
             <element signature="e#3580#4361#0" expanded="false" />
-            <element signature="e#4441#5549#0" expanded="false" />
-            <element signature="e#7556#7698#0" expanded="false" />
+            <element signature="e#8100#8242#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -615,9 +608,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="885">
           <caret line="105" column="29" selection-start-line="105" selection-start-column="24" selection-end-line="105" selection-end-column="29" />
-          <folding>
-            <element signature="e#404#2724#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -628,8 +619,7 @@
           <folding>
             <element signature="e#550#588#0" expanded="false" />
             <element signature="e#3580#4361#0" expanded="false" />
-            <element signature="e#4441#5549#0" expanded="false" />
-            <element signature="e#7556#7698#0" expanded="false" />
+            <element signature="e#8100#8242#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -659,9 +649,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#404#2724#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -684,9 +672,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
           <caret line="25" column="34" selection-start-line="25" selection-start-column="34" selection-end-line="25" selection-end-column="34" />
-          <folding>
-            <element signature="e#404#2724#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -704,8 +690,7 @@
           <folding>
             <element signature="e#550#588#0" expanded="false" />
             <element signature="e#3580#4361#0" expanded="false" />
-            <element signature="e#4441#5549#0" expanded="false" />
-            <element signature="e#7556#7698#0" expanded="false" />
+            <element signature="e#8100#8242#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -737,9 +722,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="18" column="42" selection-start-line="18" selection-start-column="42" selection-end-line="18" selection-end-column="42" />
-          <folding>
-            <element signature="e#404#2724#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -765,8 +748,7 @@
           <folding>
             <element signature="e#550#588#0" expanded="false" />
             <element signature="e#3580#4361#0" expanded="false" />
-            <element signature="e#4441#5549#0" expanded="false" />
-            <element signature="e#7556#7698#0" expanded="false" />
+            <element signature="e#8100#8242#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -775,9 +757,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1785">
           <caret line="119" column="60" selection-start-line="119" selection-start-column="60" selection-end-line="119" selection-end-column="60" />
-          <folding>
-            <element signature="e#404#2724#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -851,24 +831,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1475">
           <caret line="82" column="17" selection-start-line="82" selection-start-column="17" selection-end-line="82" selection-end-column="17" />
-          <folding>
-            <element signature="e#404#2724#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/options.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/insert.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="586">
-          <caret line="83" column="1" selection-start-line="83" selection-start-column="1" selection-end-line="83" selection-end-column="1" />
           <folding />
         </state>
       </provider>
@@ -881,24 +843,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/aria2.js">
+    <entry file="file://$PROJECT_DIR$/options.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="169" column="56" selection-start-line="169" selection-start-column="56" selection-end-line="169" selection-end-column="56" />
-          <folding>
-            <element signature="e#550#588#0" expanded="false" />
-            <element signature="e#3580#4361#0" expanded="false" />
-            <element signature="e#4441#5549#0" expanded="false" />
-            <element signature="e#7556#7698#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="75">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/background.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="40" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
+        <state relative-caret-position="-360">
+          <caret line="15" column="38" selection-start-line="15" selection-start-column="38" selection-end-line="15" selection-end-column="38" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/insert.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="586">
+          <caret line="83" column="1" selection-start-line="83" selection-start-column="1" selection-end-line="83" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/aria2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="198" column="80" selection-start-line="198" selection-start-column="80" selection-end-line="198" selection-end-column="80" />
+          <folding>
+            <element signature="e#550#588#0" expanded="false" />
+            <element signature="e#3580#4361#0" expanded="false" />
+            <element signature="e#8100#8242#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
