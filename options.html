@@ -15,9 +15,15 @@
 </head>
 <body>
 
-<div style="width: 400px;margin: 0 auto;padding: 20px;">
-    <div class="form-group"><label for="">服务器地址<span id="server_version"></span></label> <input class="form-control" id="serverUrl" type="text"></div>
-    <div class="form-group"><label for="">下载路径</label> <input class="form-control" id="downloadPath" type="text"></div>
+<div style="width: 450px;margin: 0 auto;padding: 20px;">
+    <div class="form-group">
+        <label for="serverUrl">服务器地址<span id="server_version"></span></label> <input class="form-control" id="serverUrl" type="text">
+    <span class="help-block">注意: 仅支持 token 验证模式. <br/>如: http://token:12345@localhost:6800/jsonrpc</span>
+</div>
+    <div class="form-group">
+        <label for="serverUrl">下载路径</label> <input class="form-control" id="downloadPath" type="text">
+        <span class="help-block">注意: 请输入绝对路径, 留空使用默认值</span>
+    </div>
     <button class="btn btn-primary" id="save">保存</button>
     <button class="btn btn-success" id="reset">重置</button>
 

@@ -8,6 +8,7 @@ chrome.contextMenus.create({
     "contexts": ["link", "image", "video", "audio"]
 });
 chrome.runtime.onInstalled.addListener(function(previousVersion){
+    if(!previousVersion || !localStorage.serverUrl)
     chrome.runtime.openOptionsPage();
 });
 //初始化

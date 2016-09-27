@@ -19,24 +19,24 @@ $(function () {
 
     function testServer(setting) {
         $("#server_version").removeClass(".red");
-        $("#server_version").html(", 连接到服务器中");
+        $("#server_version").html("(连接中)");
         var updatetimer = setInterval(function () {
-            if ($("#server_version").html() == ", 连接到服务器中") {
-                $("#server_version").html(", 连接到服务器中.");
-            } else if ($("#server_version").html() == ", 连接到服务器中.") {
-                $("#server_version").html(", 连接到服务器中..");
-            } else if ($("#server_version").html() == ", 连接到服务器中..") {
-                $("#server_version").html(", 连接到服务器中");
+            if ($("#server_version").html() == "(连接中)") {
+                $("#server_version").html("(连接中.)");
+            } else if ($("#server_version").html() == "(连接中.)") {
+                $("#server_version").html("(连接中..)");
+            } else if ($("#server_version").html() == "(连接中..)") {
+                $("#server_version").html("(连接中)");
             }
         }, 200);
         messageSendToBackground(100, setting, function (response) {
             if (response.code == 0) {
                 clearInterval(updatetimer);
-                $("#server_version").html(", 服务器连接失败").addClass(".red");
+                $("#server_version").html("(连接失败)").addClass(".red");
                 $("#serverUrl").addClass('red');
             } else {
                 clearInterval(updatetimer);
-                $("#server_version").removeClass(".red").html(", 当前版本 v" + response.message);
+                $("#server_version").removeClass(".red").html("(已连接 v" + response.message + ")");
                 $("#serverUrl").removeClass('red');
             }
         });
