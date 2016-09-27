@@ -166,29 +166,49 @@ var Aria2 = {
             }
         };
         instance.download = function (param, downloadDir, success, fail) {
-            var aria2param = [
-                [param.url],
-                {
-                    out: param.name,
-                    header: param.header,
-                    dir: downloadDir
-                }
-            ];
+            var aria2param = undefined;
+            if (downloadDir && downloadDir.length > 0) {
+                aria2param = [
+                    [param.url],
+                    {
+                        out: param.name,
+                        header: param.header,
+                        dir: downloadDir
+                    }
+                ];
+            } else {
+                aria2param = [
+                    [param.url],
+                    {
+                        out: param.name,
+                        header: param.header
+                    }
+                ];
+            }
             instance.sendRequest("addUri", aria2param, success, fail);
         };
         instance.batchDownload = function (params, downloadDir, success, fail) {
             var aria2params = [];
             for (var i = 0, l = params.length; i < l; i++) {
                 var n = params[i];
-                var aria2param = [
-                    [n.url],
-                    {
-                        out: n.name,
-                        header: n.header,
-                        dir: downloadDir
-                    }
-                ];
-                aria2params.push(aria2param)
+                if (downloadDir && downloadDir.length > 0) {
+                    aria2params.push([
+                        [n.url],
+                        {
+                            out: n.name,
+                            header: n.header,
+                            dir: downloadDir
+                        }
+                    ]);
+                } else {
+                    aria2params.push([
+                        [n.url],
+                        {
+                            out: n.name,
+                            header: n.header
+                        }
+                    ]);
+                }
             }
             instance.sendBatchRequest("addUri", aria2params, success, fail);
         };

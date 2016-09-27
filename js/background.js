@@ -3,7 +3,7 @@
  */
 
 chrome.contextMenus.create({
-    "id": "xunleiToAria2LinkContextMenu",
+    "id": "xunleitoaria2_menu"+Math.random()*10000,
     "title": "下载到 Aria2",
     "contexts": ["link", "image", "video", "audio"]
 });
@@ -13,8 +13,6 @@ chrome.runtime.onInstalled.addListener(function(previousVersion){
 //初始化
 if (!localStorage.serverUrl) {
     localStorage.serverUrl = "http://localhost:6800/jsonrpc";
-}
-if (!localStorage.downloadPath) {
     localStorage.downloadPath = "/mnt/";
 }
 Aria2.shareAria2().setUrl(localStorage.serverUrl);
