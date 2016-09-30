@@ -96,7 +96,7 @@ var XunleiAPI = {
                 success: function (output, status, xhr) {
                     //{"id":"1540202127827456","avail_space":"1123741114859670","time":1.0901968479156,"progress":1})
                     output = JSON.parse(output.substring(7, output.length - 1));
-                    if ((output instanceof Arrary ) && output.length == 0){
+                    if ((output instanceof Array ) && output.length == 0){
                         //还没完成
                         task.sendMessageToConentScript(ContentMessageCode.xunleiDownloading);
                         callback();
