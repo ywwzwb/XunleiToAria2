@@ -31,6 +31,9 @@ if ($("#xunleitoaria2hidden").length == 0) {
                 onAria2DownloadFail();
                 break;
             case 8:
+                onAria2DownloadFailNotsupportEd2k();
+                break;
+            case 9:
                 onTaskDone();
                 break;
             default:
@@ -84,6 +87,10 @@ function onXunleiDownloadDoing() {
 }
 function onAria2DownloadFinish() {
     $("#xunleitoaria2div .title").text("下载成功");
+    $("#xunleitoaria2div>.box>.yzmform").hide();
+}
+function onAria2DownloadFailNotsupportEd2k() {
+    $("#xunleitoaria2div .title").text(" 不支持电驴直接下载");
     $("#xunleitoaria2div>.box>.yzmform").hide();
 }
 function onAria2DownloadFail() {

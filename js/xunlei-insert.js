@@ -86,7 +86,7 @@ $(function () {
             case 7:
                 onAria2DownloadFail();
                 break;
-            case 8:
+            case 9:
                 onTaskDone();
                 break;
             default:

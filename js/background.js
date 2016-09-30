@@ -1,15 +1,20 @@
 /**
  * Created by zengwenbin on 16/9/12.
  */
-
+chrome.contextMenus.removeAll();
 chrome.contextMenus.create({
-    "id": "xunleitoaria2_menu"+Math.random()*10000,
-    "title": "下载到 Aria2",
+    "id": "xunleitoaria2_downloadoverxunlei",
+    "title": "使用迅雷下载到 Aria2",
     "contexts": ["link", "image", "video", "audio"]
 });
-chrome.runtime.onInstalled.addListener(function(previousVersion){
-    if(!previousVersion || !localStorage.serverUrl)
-    chrome.runtime.openOptionsPage();
+chrome.contextMenus.create({
+    "id": "xunleitoaria2_downloadirectly",
+    "title": "直接下载到 Aria2",
+    "contexts": ["link", "image", "video", "audio"]
+});
+chrome.runtime.onInstalled.addListener(function (previousVersion) {
+    if (!previousVersion || !localStorage.serverUrl)
+        chrome.runtime.openOptionsPage();
 });
 //初始化
 if (!localStorage.serverUrl) {
@@ -23,6 +28,7 @@ chrome.browserAction.onClicked.addListener(function () {
     });
 });
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
+    // var menuid = info.menuItemId
     chrome.tabs.executeScript({
         file: "js/jquery-3.1.0.min.js"
     }, function () {
@@ -36,6 +42,7 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
                 var task = Task.init();
                 task.url = url;
                 task.tabid = tab.id;
+                task.directDownloadTask = info.menuItemId == "xunleitoaria2_downloadirectly";
                 task.doTask();
             });
         })
@@ -51,8 +58,8 @@ chrome.runtime.onMessage.addListener(
                     localStorage.serverUrl = request.message.url;
                     localStorage.downloadPath = request.message.downloadPath;
                 }
-                Aria2.shareAria2().setUrl(localStorage.serverUrl, function(serverOk, message){
-                    if (serverOk){
+                Aria2.shareAria2().setUrl(localStorage.serverUrl, function (serverOk, message) {
+                    if (serverOk) {
                         sendResponse({code: 1, message: message});
                     } else {
                         sendResponse({code: 0});
@@ -113,7 +120,6 @@ chrome.runtime.onMessage.addListener(
                 tasks[0].sendMessageToConentScript(ContentMessageCode.taskStart);
                 XunleiAPI.init(tasks).doTasks();
                 break;
-
             case 300:
                 chrome.runtime.openOptionsPage();
                 break;

@@ -11,7 +11,8 @@ var ContentMessageCode = {
     xunleiloginFail: 5,
     aria2DownloadFinish: 6,
     aria2DownloadFail: 7,
-    taskEnd: 8
+    aria2DownloadFailNotSupportEd2k: 8,
+    taskEnd: 9
 };
 
 var Task = {
@@ -22,9 +23,35 @@ var Task = {
         instance.isLixanUrl = false;
         instance.btTaskID = undefined;
         instance.taskname = undefined;
+        instance.directDownloadTask = false;
+        var decryptUrl = function () {
+            if (instance.url.startsWith("thunder://")) {
+                instance.url = atob(instance.ur.replace("thunder://", "")).replace(/^AA|ZZ$/g, "")
+            }
+        };
         instance.doTask = function () {
-            instance.sendMessageToConentScript(0);
-            XunleiAPI.init(instance).doTasks()
+            instance.sendMessageToConentScript(ContentMessageCode.taskStart);
+            if (instance.directDownloadTask == true) {
+                decryptUrl();
+                if (instance.url.startsWith("ed2k://")) {
+                    instance.sendMessageToConentScript(ContentMessageCode.aria2DownloadFailNotSupportEd2k);
+                    setTimeout(function () {
+                        instance.sendMessageToConentScript(ContentMessageCode.taskEnd);
+                    }, 1000);
+                } else {
+                    Aria2.shareAria2().download({
+                        url:instance.url
+                    }, localStorage.downloadPath, function () {
+                        instance.sendMessageToConentScript(ContentMessageCode.aria2DownloadFinish);
+                        instance.sendMessageToConentScript(ContentMessageCode.taskEnd);
+                    }, function () {
+                        instance.sendMessageToConentScript(ContentMessageCode.aria2DownloadFail);
+                        instance.sendMessageToConentScript(ContentMessageCode.taskEnd);
+                    });
+                }
+            } else {
+                XunleiAPI.init(instance).doTasks()
+            }
         };
         instance.sendMessageToConentScript = function (code, message, response) {
             chrome.tabs.sendMessage(instance.tabid, {
