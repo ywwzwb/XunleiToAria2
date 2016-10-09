@@ -105,7 +105,7 @@ var XunleiAPI = {
                     var tasks = output.Result[id];
                     $.each(tasks, function () {
                         aria2Tasks.push({
-                            name: (btname + "/" + this.title).replace(/\\/g, ""),
+                            name: (btname + "/" + this.title).replace(/\\\/?/g, "/"),
                             header: "Cookie:" + XunleiAPI.xunleiGDriverID,
                             url: this.downurl
                         })
@@ -219,7 +219,7 @@ var XunleiAPI = {
                         });
                         if (taskjson && taskjson.progress == 100 && taskjson.lixian_url) {
                              aria2Tasks.push({
-                                name: taskjson.taskname.replace(/\\/g, ""),
+                                name: taskjson.taskname.replace(/\\\/?/g, "/"),
                                 header: "Cookie:" + XunleiAPI.xunleiGDriverID,
                                 url: taskjson.lixian_url
                             });

@@ -11,24 +11,73 @@
         .red {
             border-color: red;
         }
+
+        td {
+            word-break: break-all;
+        }
+        .radio-container {
+            margin-right: 5px;
+        }
+        .operate-btn-group-right {
+            float: right;
+        }
     </style>
 </head>
 <body>
 
 <div style="width: 450px;margin: 0 auto;padding: 20px;">
-    <div class="form-group">
-        <label for="serverUrl">服务器地址<span id="server_version"></span></label>
-        <input class="form-control" id="serverUrl" type="text">
-        <span class="help-block">注意: 仅支持 token 验证模式. <br/>如: http://token:12345@localhost:6800/jsonrpc</span>
+    <div class="form-group" id="main_form">
+        <label for="server_profile">选择服务器配置
+            <button class="btn btn-primary btn-xs" id="profile_list">
+                管理
+            </button>
+        </label>
+        <select class="form-control" id="server_profile">
+            <option>客厅电脑</option>
+            <option>NAS 存储</option>
+            <option>本机</option>
+        </select>
+        <span class="help-block">
+            服务器地址: http://token:12345@localhost:6800/jsonrpc<br/>
+            服务器版本: v1.2.3<br/>
+            下载路径: /mnt/<br/>
+            <button class="btn btn-primary btn-xs" id="update">修改</button>
+        </span>
+        <button class="btn btn-primary" id="save">保存</button>
+        <button class="btn btn-success" id="reset">重置</button>
     </div>
-    <div class="form-group">
-        <label for="downloadPath">下载路径</label>
-        <input class="form-control" id="downloadPath" type="text">
-        <span class="help-block">注意: 请输入绝对路径, 留空使用默认值</span>
+    <div id="update_form" style="display: none">
+        <div class="form-group">
+            <label for="server_url">服务器地址</label>
+            <input class="form-control" id="server_url" type="text">
+            <span class="help-block">注意: 仅支持 token 验证模式. <br/>如: http://token:12345@localhost:6800/jsonrpc</span>
+        </div>
+        <div class="form-group">
+            <label for="download_path">下载路径</label>
+            <input class="form-control" id="download_path" type="text">
+            <span class="help-block">注意: 请输入绝对路径, 留空使用默认值</span>
+        </div>
+        <button class="btn btn-primary" id="update_save">保存</button>
+        <button class="btn btn-success" id="update_cancel">取消</button>
+        <button class="btn btn-success" id="update_back" style="display: none">返回</button>
     </div>
-    <button class="btn btn-primary" id="save">保存</button>
-    <button class="btn btn-success" id="reset">重置</button>
-
+    <div id="list_profile" style="display: none">
+        <h4>配置列表</h4>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <span class="radio-container">
+                    <input type="radio"/>
+                </span>
+                家
+                <span class="operate-btn-group-right">
+                    <a href="#">详细</a>
+                    <a href="#" class="text-danger">删除</a>
+                </span>
+            </li>
+        </ul>
+        <button class="btn btn-primary" id="list_form_create">新建</button>
+        <button class="btn btn-success" id="list_form_back">返回</button>
+    </div>
 </div>
 </body>
 </html>

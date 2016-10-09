@@ -9,6 +9,7 @@ $(function () {
             message: message
         }, response);
     }
+
     function init() {
         messageSendToBackground(102, null, function (response) {
             $('#serverUrl').val(response.message.serverUrl);
@@ -53,6 +54,34 @@ $(function () {
             $('#downloadPath').val(response.message.downloadPath);
             testServer()
         });
+    });
+    $("#update").click(function () {
+        $("#main_form").hide();
+        $("#update_cancel").show();
+        $("#update_back").hide();
+        $("#update_form").show();
+    });
+    $("#update_cancel").click(function () {
+        $("#main_form").show();
+        $("#update_form").hide();
+    });
+    $("#profile_list").click(function () {
+        $("#main_form").hide();
+        $("#list_profile").show();
+    });
+    $("#list_form_back").click(function () {
+        $("#main_form").show();
+        $("#list_profile").hide();
+    });
+    $("#list_form_create").click(function () {
+        $("#list_profile").hide();
+        $("#update_cancel").hide();
+        $("#update_back").show();
+        $("#update_form").show();
+    });
+    $("#update_back").click(function () {
+        $("#list_profile").show();
+        $("#update_form").hide();
     });
     init();
 });
