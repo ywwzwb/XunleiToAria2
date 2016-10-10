@@ -25,7 +25,7 @@
 
 <div style="width: 450px;margin: 0 auto;padding: 20px;">
     <div class="form-group" id="main_form">
-        <label for="server_profile">选择服务器配置
+        <label class="control-label" for="server_profile">选择服务器配置
             <button class="btn btn-primary btn-xs" id="profile_list">
                 管理
             </button>
@@ -46,20 +46,21 @@
     </div>
     <div id="update_form" style="display: none">
         <div class="form-group">
-            <label for="update_server_name">服务器名称</label>
+            <label class="control-label" for="update_server_name">服务器名称</label>
             <input class="form-control" id="update_server_name" type="text">
             <span class="help-block">如:客厅的下载器</span>
         </div>
         <div class="form-group">
-            <label for="update_server_url">服务器地址</label>
+            <label class="control-label" for="update_server_url">服务器地址</label>
             <input class="form-control" id="update_server_url" type="text">
             <span class="help-block">注意: 仅支持 token 验证模式. <br/>如: http://token:12345@localhost:6800/jsonrpc</span>
         </div>
         <div class="form-group">
-            <label for="update_server_downloadpath">下载路径</label>
+            <label class="control-label" for="update_server_downloadpath">下载路径</label>
             <input class="form-control" id="update_server_downloadpath" type="text">
             <span class="help-block">注意: 请输入绝对路径, 留空使用默认值</span>
         </div>
+        <div class="alert alert-danger" id ="update_server_error" role="alert" style="display: none"></div>
         <button class="btn btn-primary" id="update_server_save" data-serverid="">保存</button>
         <button class="btn btn-success" id="update_server_cancel" style="display: none">取消</button>
         <button class="btn btn-success" id="update_server_back" style="display: none">返回</button>

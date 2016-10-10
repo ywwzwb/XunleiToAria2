@@ -112,6 +112,7 @@ $(function () {
         $("#update_server_cancel").show();
         $("#update_server_back").hide();
         $("#update_form").show();
+        $("#update_server_save").attr("disabled",false);
         messageSendToBackground(103, $(this).attr("data-serverid"), function (response) {
             displayServerOnUpdateForm(response.message);
         });
@@ -144,6 +145,32 @@ $(function () {
             displayServerOnMainForm(response.message);
         });
     });
-    
+    $("#update_server_name, #update_server_url").keyup(function(){
+        if($("#update_server_name").val().trim().length == 0){
+            $("#update_server_save").attr("disabled",true);
+            return;
+        }
+        if($("#update_server_url").val().trim().length == 0){
+            $("#update_server_save").attr("disabled",true);
+            return;
+        }
+        $("#update_server_save").attr("disabled",false);
+    });
+    $("#update_server_save").click(function () {
+        var serverID = $(this).attr("data-serverid");
+        var name = $("#update_server_name").val();
+        var url = $("#update_server_url").val();
+        var downloadPath = $("#downloadPath").val();
+        var serverInfo = {
+            id: serverID,
+            name: $("#update_server_name").val(),
+            url:  $("#update_server_url").val(),
+            downloadPath: $("#update_server_downloadpath").val(),
+            version: 0
+        };
+        // messageSendToBackground(103, selectedServerID, function (response) {
+        //     displayServerOnMainForm(response.message);
+        // });
+    });
     init();
 });
