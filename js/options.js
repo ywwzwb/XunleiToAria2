@@ -3,6 +3,8 @@
  */
 
 $(function () {
+    var selectedServerID = undefined;
+
     function messageSendToBackground(code, message, response) {
         chrome.runtime.sendMessage({
             code: code,
@@ -11,24 +13,34 @@ $(function () {
     }
 
     function init() {
+        refreshMainForm(true);
+
+    }
+
+    function refreshMainForm(saveCurrentServer) {
         messageSendToBackground(102, null, function (response) {
-            var currentServerID = response.message.currentServer;
+            if (saveCurrentServer) {
+                selectedServerID = response.message.currentServer;
+            }
             var servers = response.message.servers;
-            var hasCurrentServer = false;
+            var hasSelectedServer = false;
+            $("#server_profile").html("");
             for (var serverid in servers) {
                 var server = servers[serverid];
-                if (serverid == currentServerID) {
-                    hasCurrentServer = true;
+                if (serverid == selectedServerID) {
+                    hasSelectedServer = true;
                     displayServerOnMainForm(server);
                 }
                 $("<option>").val(server.id).text(server.name).appendTo($("#server_profile"));
             }
-            if (!hasCurrentServer) {
+            $("#server_profile").val(selectedServerID);
+            if (!hasSelectedServer) {
                 $("#current_server_span").hide();
                 $("#no_current_server_span").show();
             }
         });
     }
+
     function displayServerOnMainForm(server) {
         $("#selected_server_span").show();
         $("#no_selected_server_span").hide();
@@ -47,8 +59,15 @@ $(function () {
         } else {
             $("#selected_server_downloadpath").text(downloadPath);
         }
-        $("#test_selected_server").attr("data-serverid",server.id);
-        $("#update_selected_server").attr("data-serverid",server.id);
+        $("#test_selected_server").attr("data-serverid", server.id);
+        $("#update_selected_server").attr("data-serverid", server.id);
+    }
+
+    function displayServerOnUpdateForm(server) {
+        $("#update_server_name").val(server.name);
+        $("#update_server_url").val(server.url);
+        $("#update_server_downloadpath").val(server.downloadPath);
+        $("#update_server_save").attr("data-serverid", server.id);
     }
 
     function testServer(setting) {
@@ -90,11 +109,14 @@ $(function () {
     });
     $("#update_selected_server").click(function () {
         $("#main_form").hide();
-        $("#update_cancel").show();
-        $("#update_back").hide();
+        $("#update_server_cancel").show();
+        $("#update_server_back").hide();
         $("#update_form").show();
+        messageSendToBackground(103, $(this).attr("data-serverid"), function (response) {
+            displayServerOnUpdateForm(response.message);
+        });
     });
-    $("#update_cancel").click(function () {
+    $("#update_server_cancel").click(function () {
         $("#main_form").show();
         $("#update_form").hide();
     });
@@ -108,18 +130,20 @@ $(function () {
     });
     $("#list_form_create").click(function () {
         $("#list_profile").hide();
-        $("#update_cancel").hide();
-        $("#update_back").show();
+        $("#update_server_cancel").hide();
+        $("#update_server_back").show();
         $("#update_form").show();
     });
-    $("#update_back").click(function () {
+    $("#update_server_back").click(function () {
         $("#list_profile").show();
         $("#update_form").hide();
     });
-    $("#server_profile").change(function(){
-        messageSendToBackground(103, $(this).val(), function (response) {
+    $("#server_profile").change(function () {
+        selectedServerID = $(this).val();
+        messageSendToBackground(103, selectedServerID, function (response) {
             displayServerOnMainForm(response.message);
         });
     });
+    
     init();
 });

@@ -101,7 +101,7 @@ chrome.runtime.onMessage.addListener(
                 break;
             case 103:
                 //获取某服务器配置
-                ServerManager.shareManager().getServer(request.message.serverid, function (success, server) {
+                ServerManager.shareManager().getServer(request.message, function (success, server) {
                     sendResponse({
                         code: 1,
                         message: server
