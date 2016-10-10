@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e822d445-3753-4c23-9728-cf8515f8a402" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/background.js" afterPath="$PROJECT_DIR$/js/background.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/options.js" afterPath="$PROJECT_DIR$/js/options.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/servermanager.js" afterPath="$PROJECT_DIR$/js/servermanager.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/manifest.json" afterPath="$PROJECT_DIR$/manifest.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/options.html" afterPath="$PROJECT_DIR$/options.html" />
     </list>
     <ignored path="xunleitoaria2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,7 +46,7 @@
         <entry file="file://$PROJECT_DIR$/js/servermanager.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="210">
-              <caret line="19" column="41" selection-start-line="19" selection-start-column="41" selection-end-line="19" selection-end-column="41" />
+              <caret line="26" column="26" selection-start-line="26" selection-start-column="26" selection-end-line="26" selection-end-column="26" />
               <folding>
                 <element signature="e#0#44#0" expanded="false" />
               </folding>
@@ -119,8 +116,8 @@
         <option value="$PROJECT_DIR$/manifest.json" />
         <option value="$PROJECT_DIR$/options.html" />
         <option value="$PROJECT_DIR$/js/options.js" />
-        <option value="$PROJECT_DIR$/js/servermanager.js" />
         <option value="$PROJECT_DIR$/js/background.js" />
+        <option value="$PROJECT_DIR$/js/servermanager.js" />
       </list>
     </option>
   </component>
@@ -131,7 +128,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="103" />
+    <option name="x" value="-188" />
     <option name="y" value="23" />
     <option name="width" value="1229" />
     <option name="height" value="777" />
@@ -465,7 +462,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="103" y="23" width="1229" height="777" extended-state="0" />
+    <frame x="-188" y="23" width="1229" height="777" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22577928" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -813,14 +810,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="7" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/test.html" />
     <entry file="file://$PROJECT_DIR$/js/xunleiapi.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="209">
@@ -833,7 +823,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
           <caret line="34" column="22" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -895,7 +884,7 @@
     <entry file="file://$PROJECT_DIR$/js/servermanager.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
-          <caret line="19" column="41" selection-start-line="19" selection-start-column="41" selection-end-line="19" selection-end-column="41" />
+          <caret line="26" column="26" selection-start-line="26" selection-start-column="26" selection-end-line="26" selection-end-column="26" />
           <folding>
             <element signature="e#0#44#0" expanded="false" />
           </folding>

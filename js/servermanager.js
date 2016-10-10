@@ -14,7 +14,7 @@ var ServerManager = {
             console.error("打开数据库出错");
         };
         request.onsuccess = function (event) {
-            db = request.result;
+            db = this.result;
         };
         request.onupgradeneeded = function (event) {
             var db = event.target.result;
@@ -29,9 +29,6 @@ var ServerManager = {
                 delete localStorage.serverUrl;
                 delete localStorage.downloadPath;
                 instance.setCurrentServerID(event.target.result);
-            };
-            db.onerror = function (event) {
-                console.error("未处理的错误:", event.target.errorCode);
             };
         };
 
