@@ -31,16 +31,13 @@
             </button>
         </label>
         <select class="form-control" id="server_profile">
-            <option>客厅电脑</option>
-            <option>NAS 存储</option>
-            <option>本机</option>
         </select>
         <span class="help-block">
             <span id="selected_server_span" style="display: none">
                 服务器地址: <span id="selected_server_url"></span><br/>
-                服务器版本: <span id="selected_server_version"></span> <button class="btn btn-primary btn-xs" id="test_selected_server">测试</button><br/>
+                服务器版本: <span id="selected_server_version"></span> <button class="btn btn-primary btn-xs" id="test_selected_server" data-serverid="">测试</button><br/>
                 下载路径: <span id="selected_server_downloadpath"></span><br/>
-                <button class="btn btn-primary btn-xs" id="update_selected_server">修改</button>
+                <button class="btn btn-primary btn-xs" id="update_selected_server" data-serverid="">修改</button>
             </span>
             <span id="no_selected_server_span" style="display: none">没有选择任何服务器</span>
         </span>
@@ -48,6 +45,11 @@
         <button class="btn btn-success" id="reset">重置</button>
     </div>
     <div id="update_form" style="display: none">
+        <div class="form-group">
+            <label for="server_name">服务器名称</label>
+            <input class="form-control" id="server_name" type="text">
+            <span class="help-block">如:客厅的下载器</span>
+        </div>
         <div class="form-group">
             <label for="server_url">服务器地址</label>
             <input class="form-control" id="server_url" type="text">

@@ -21,6 +21,7 @@ $(function () {
                     hasCurrentServer = true;
                     displayServerOnMainForm(server);
                 }
+                $("<option>").val(server.id).text(server.name).appendTo($("#server_profile"));
             }
             if (!hasCurrentServer) {
                 $("#current_server_span").hide();
@@ -28,7 +29,6 @@ $(function () {
             }
         });
     }
-
     function displayServerOnMainForm(server) {
         $("#selected_server_span").show();
         $("#no_selected_server_span").hide();
@@ -47,6 +47,8 @@ $(function () {
         } else {
             $("#selected_server_downloadpath").text(downloadPath);
         }
+        $("#test_selected_server").attr("data-serverid",server.id);
+        $("#update_selected_server").attr("data-serverid",server.id);
     }
 
     function testServer(setting) {
@@ -86,7 +88,7 @@ $(function () {
             testServer()
         });
     });
-    $("#update_current_server").click(function () {
+    $("#update_selected_server").click(function () {
         $("#main_form").hide();
         $("#update_cancel").show();
         $("#update_back").hide();
@@ -113,6 +115,11 @@ $(function () {
     $("#update_back").click(function () {
         $("#list_profile").show();
         $("#update_form").hide();
+    });
+    $("#server_profile").change(function(){
+        messageSendToBackground(103, $(this).val(), function (response) {
+            displayServerOnMainForm(response.message);
+        });
     });
     init();
 });

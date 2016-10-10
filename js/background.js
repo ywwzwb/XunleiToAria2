@@ -87,7 +87,7 @@ chrome.runtime.onMessage.addListener(
                 });
                 break;
             case 102:
-                //获取配置
+                //获取当前服务器配置
                 ServerManager.shareManager().getAllServers(function (success, servers) {
                     sendResponse({
                         code: 1,
@@ -95,6 +95,16 @@ chrome.runtime.onMessage.addListener(
                             currentServer: ServerManager.shareManager().getCurrentServerID(),
                             servers: servers
                         }
+                    });
+                });
+                return true;//异步消息发送
+                break;
+            case 103:
+                //获取某服务器配置
+                ServerManager.shareManager().getServer(request.message.serverid, function (success, server) {
+                    sendResponse({
+                        code: 1,
+                        message: server
                     });
                 });
                 return true;//异步消息发送

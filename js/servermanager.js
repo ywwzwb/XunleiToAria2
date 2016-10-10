@@ -19,17 +19,20 @@ var ServerManager = {
         request.onupgradeneeded = function (event) {
             var db = event.target.result;
             var objectStore = db.createObjectStore("servers", {keyPath: "id"});
-            objectStore.add({
-                id: localStorage.currentServerID++,
-                name: "Aria2",
-                url: localStorage.serverUrl,
-                downloadPath: localStorage.downloadPath,
-                version: 0
-            }).onsuccess = function (event) {
-                delete localStorage.serverUrl;
-                delete localStorage.downloadPath;
-                instance.setCurrentServerID(event.target.result);
-            };
+            if (localStorage.serverUrl) {
+                objectStore.add({
+                    id: localStorage.currentServerID++,
+                    name: "Aria2",
+                    url: localStorage.serverUrl,
+                    downloadPath: localStorage.downloadPath,
+                    version: 0
+                }).onsuccess = function (event) {
+                    delete localStorage.serverUrl;
+                    delete localStorage.downloadPath;
+                    instance.setCurrentServerID(event.target.result);
+                };
+            }
+
         };
 
         instance.addServer = function (name, url, downloadPath, version, callback) {
@@ -81,6 +84,7 @@ var ServerManager = {
         instance.getServer = function (serverid, callback) {
             callback = callback || function () {
                 };
+            serverid = parseInt(serverid);
             if (!serverid || serverid == 0 || serverid.length == 0) {
                 callback(false);
                 return;
@@ -118,7 +122,7 @@ var ServerManager = {
             localStorage.currentServerID = serverid;
         };
         instance.getCurrentServerID = function () {
-            return parseInt(localStorage.currentServerID);
+            return localStorage.currentServerID;
         };
         instance.getCurrentServer = function (callback) {
             instance.getServer(instance.getCurrentServerID(), callback);
