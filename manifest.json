@@ -3,7 +3,7 @@
   "name": "迅雷离线Aria2",
   "short_name": "xta",
   "description": "这个插件使用迅雷离线作为中转, 加速 Aria2 下载. 现在也可以直接用 Aria2 下载",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "icons": {
     "128": "image/icon-128.png",
     "48": "image/icon-48.png",
@@ -21,6 +21,7 @@
       "js/aria2.js",
       "js/xunleiapi.js",
       "js/task.js",
+      "js/servermanager.js",
       "js/background.js"
     ],
     "persistent": false

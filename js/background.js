@@ -1,7 +1,8 @@
 /**
  * Created by zengwenbin on 16/9/12.
  */
-chrome.contextMenus.removeAll();
+
+chrome.contextMenus.removeAll();//先要清空之前设置的菜单
 chrome.contextMenus.create({
     "id": "xunleitoaria2_downloadoverxunlei",
     "title": "使用迅雷下载到 Aria2",
@@ -12,16 +13,24 @@ chrome.contextMenus.create({
     "title": "直接下载到 Aria2",
     "contexts": ["link", "image", "video", "audio"]
 });
+ServerManager.shareManager();//先调用 ServerManager的初始化方法初始化数据库
 chrome.runtime.onInstalled.addListener(function (previousVersion) {
-    if (!previousVersion || !localStorage.serverUrl)
-        chrome.runtime.openOptionsPage();
+    setTimeout(function () {
+        //没有配置的情况下, 弹出设置框
+        if (!ServerManager.shareManager().getCurrentServerID()) {
+            chrome.runtime.openOptionsPage();
+        }
+    }, 100);
 });
-//初始化
-if (!localStorage.serverUrl) {
-    localStorage.serverUrl = "http://localhost:6800/jsonrpc";
-    localStorage.downloadPath = "/mnt/";
-}
-Aria2.shareAria2().setUrl(localStorage.serverUrl);
+setTimeout(function () {
+    ServerManager.shareManager().getCurrentServer(function (success, server) {
+        if (success) {
+            Aria2.shareAria2().setUrl(server.url);
+        } else {
+            console.warn("服务器连接失败");
+        }
+    });
+}, 100);
 chrome.browserAction.onClicked.addListener(function () {
     chrome.tabs.create({
         url: "http://lixian.xunlei.com"
@@ -79,10 +88,16 @@ chrome.runtime.onMessage.addListener(
                 break;
             case 102:
                 //获取配置
-                sendResponse({
-                    code: 1,
-                    message: {serverUrl: localStorage.serverUrl, downloadPath: localStorage.downloadPath}
+                ServerManager.shareManager().getAllServers(function (success, servers) {
+                    sendResponse({
+                        code: 1,
+                        message: {
+                            currentServer: ServerManager.shareManager().currentServerID,
+                            servers: servers
+                        }
+                    });
                 });
+                return true;//异步消息发送
                 break;
             case 200:
                 //迅雷页面单普通任务下载

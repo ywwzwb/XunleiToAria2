@@ -8,16 +8,14 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <title>设置</title>
     <style>
-        .red {
-            border-color: red;
-        }
-
         td {
             word-break: break-all;
         }
+
         .radio-container {
             margin-right: 5px;
         }
+
         .operate-btn-group-right {
             float: right;
         }
@@ -38,10 +36,13 @@
             <option>本机</option>
         </select>
         <span class="help-block">
-            服务器地址: http://token:12345@localhost:6800/jsonrpc<br/>
-            服务器版本: v1.2.3<br/>
-            下载路径: /mnt/<br/>
-            <button class="btn btn-primary btn-xs" id="update">修改</button>
+            <span id="current_server_span" style="display: none">
+                服务器地址: <span id="current_server_url"></span><br/>
+                服务器版本: <span id="current_server_version"></span><br/>
+                下载路径: <span id="current_server_downloadpath"></span><br/>
+                <button class="btn btn-primary btn-xs" id="update_current_server"></button>
+            </span>
+            <span id="no_current_server_span" style="display: none">没有选择任何服务器</span>
         </span>
         <button class="btn btn-primary" id="save">保存</button>
         <button class="btn btn-success" id="reset">重置</button>
