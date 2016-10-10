@@ -112,7 +112,7 @@ $(function () {
         $("#update_server_cancel").show();
         $("#update_server_back").hide();
         $("#update_form").show();
-        $("#update_server_save").attr("disabled",false);
+        $("#update_server_save").attr("disabled", false);
         messageSendToBackground(103, $(this).attr("data-serverid"), function (response) {
             displayServerOnUpdateForm(response.message);
         });
@@ -145,26 +145,40 @@ $(function () {
             displayServerOnMainForm(response.message);
         });
     });
-    $("#update_server_name, #update_server_url").keyup(function(){
-        if($("#update_server_name").val().trim().length == 0){
-            $("#update_server_save").attr("disabled",true);
+    $("#update_server_name, #update_server_url").keyup(function () {
+        if ($("#update_server_name").val().trim().length == 0) {
+            $("#update_server_save").attr("disabled", true);
             return;
         }
-        if($("#update_server_url").val().trim().length == 0){
-            $("#update_server_save").attr("disabled",true);
+        if ($("#update_server_url").val().trim().length == 0) {
+            $("#update_server_save").attr("disabled", true);
             return;
         }
-        $("#update_server_save").attr("disabled",false);
+        $("#update_server_save").attr("disabled", false);
     });
     $("#update_server_save").click(function () {
         var serverID = $(this).attr("data-serverid");
-        var name = $("#update_server_name").val();
-        var url = $("#update_server_url").val();
-        var downloadPath = $("#downloadPath").val();
+        var name = $("#update_server_name").val().trim();
+        var url = $("#update_server_url").val().trim();
+        var downloadPath = $("#update_server_downloadpath").val().trim();
+        if (serverID.length) {
+            messageSendToBackground(103, serverID, function (response) {
+                var server = response.message;
+                if (name == server.name && url == server.url && downloadPath == server.downloadPath) {
+                    //没有任何修改
+                    $("#main_form").show();
+                    $("#update_form").hide();
+                } else {
+
+                }
+            });
+        } else {
+
+        }
         var serverInfo = {
             id: serverID,
             name: $("#update_server_name").val(),
-            url:  $("#update_server_url").val(),
+            url: $("#update_server_url").val(),
             downloadPath: $("#update_server_downloadpath").val(),
             version: 0
         };
