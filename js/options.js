@@ -30,22 +30,22 @@ $(function () {
     }
 
     function displayServerOnMainForm(server) {
-        $("#current_server_span").show();
-        $("#no_current_server_span").hide();
-        $("#current_server_url").text(server.url);
+        $("#selected_server_span").show();
+        $("#no_selected_server_span").hide();
+        $("#selected_server_url").text(server.url);
         var version = server.version;
         if (version == 0) {
-            $("#current_server_version").text("未知版本");
+            $("#selected_server_version").text("未知版本");
         } else if (version == -1) {
-            $("#current_server_version").text("连接错误");
+            $("#selected_server_version").text("连接错误");
         } else {
-            $("#current_server_version").text(version);
+            $("#selected_server_version").text(version);
         }
         var downloadPath = server.downloadPath;
         if (downloadPath && downloadPath.length == 0) {
-            $("#current_server_downloadpath").text("使用默认值");
+            $("#selected_server_downloadpath").text("使用默认值");
         } else {
-            $("#current_server_downloadpath").text(downloadPath);
+            $("#selected_server_downloadpath").text(downloadPath);
         }
     }
 

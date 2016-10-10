@@ -36,13 +36,13 @@
             <option>本机</option>
         </select>
         <span class="help-block">
-            <span id="current_server_span" style="display: none">
-                服务器地址: <span id="current_server_url"></span><br/>
-                服务器版本: <span id="current_server_version"></span><br/>
-                下载路径: <span id="current_server_downloadpath"></span><br/>
-                <button class="btn btn-primary btn-xs" id="update_current_server"></button>
+            <span id="selected_server_span" style="display: none">
+                服务器地址: <span id="selected_server_url"></span><br/>
+                服务器版本: <span id="selected_server_version"></span> <button class="btn btn-primary btn-xs" id="test_selected_server">测试</button><br/>
+                下载路径: <span id="selected_server_downloadpath"></span><br/>
+                <button class="btn btn-primary btn-xs" id="update_selected_server">修改</button>
             </span>
-            <span id="no_current_server_span" style="display: none">没有选择任何服务器</span>
+            <span id="no_selected_server_span" style="display: none">没有选择任何服务器</span>
         </span>
         <button class="btn btn-primary" id="save">保存</button>
         <button class="btn btn-success" id="reset">重置</button>

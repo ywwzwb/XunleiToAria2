@@ -92,7 +92,7 @@ chrome.runtime.onMessage.addListener(
                     sendResponse({
                         code: 1,
                         message: {
-                            currentServer: ServerManager.shareManager().currentServerID,
+                            currentServer: ServerManager.shareManager().getCurrentServerID(),
                             servers: servers
                         }
                     });

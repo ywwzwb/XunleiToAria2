@@ -118,7 +118,7 @@ var ServerManager = {
             localStorage.currentServerID = serverid;
         };
         instance.getCurrentServerID = function () {
-            return localStorage.currentServerID;
+            return parseInt(localStorage.currentServerID);
         };
         instance.getCurrentServer = function (callback) {
             instance.getServer(instance.getCurrentServerID(), callback);
