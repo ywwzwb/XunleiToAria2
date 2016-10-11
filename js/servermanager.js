@@ -68,7 +68,7 @@ var ServerManager = {
                 callback(true);
             };
         };
-        instance.updateServer = function (serverid, newServerInfo) {
+        instance.updateServer = function (serverid, newServerInfo, callback) {
             callback = callback || function () {
                 };
             var transaction = db.transaction(["servers"], "readwrite");
@@ -76,7 +76,7 @@ var ServerManager = {
                 callback(false);
             };
             var objectStore = transaction.objectStore("servers");
-            var request = objectStore.pub(newServerInfo);
+            var request = objectStore.put(newServerInfo);
             request.onsuccess = function (event) {
                 callback(true);
             };

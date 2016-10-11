@@ -62,29 +62,41 @@ chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         switch (request.code) {
             case 100:
-                //设置 aria2 链接/ 测试服务器连接
-                if (request.message) {
-                    localStorage.serverUrl = request.message.url;
-                    localStorage.downloadPath = request.message.downloadPath;
-                }
-                Aria2.shareAria2().setUrl(localStorage.serverUrl, function (serverOk, message) {
-                    if (serverOk) {
-                        sendResponse({code: 1, message: message});
+                //测试服务器连接
+                Aria2.init().setUrl(request.message, function(success, version){
+                    if (success) {
+                        sendResponse({code: 1, message: version});
                     } else {
                         sendResponse({code: 0});
                     }
                 });
                 return true;//异步消息发送
+                
+                //
+                // //设置 aria2 链接/ 测试服务器连接
+                // if (request.message) {
+                //     localStorage.serverUrl = request.message.url;
+                //     localStorage.downloadPath = request.message.downloadPath;
+                // }
+                // Aria2.shareAria2().setUrl(localStorage.serverUrl, function (serverOk, message) {
+                //     if (serverOk) {
+                //         sendResponse({code: 1, message: message});
+                //     } else {
+                //         sendResponse({code: 0});
+                //     }
+                // });
+                // return true;//异步消息发送
                 break;
 
             case 101:
-                //重置aria2 链接
-                localStorage.serverUrl = "http://localhost:6800/jsonrpc";
-                localStorage.downloadPath = "/mnt/";
-                sendResponse({
-                    code: 1,
-                    message: {serverUrl: localStorage.serverUrl, downloadPath: localStorage.downloadPath}
+                //保存服务器
+                ServerManager.shareManager().updateServer(request.message.serverid, request.message.server, function(success){
+                    if(request.message.urlchange && request.message.serverid == ServerManager.shareManager().getCurrentServerID()) {
+                        Aria2.shareAria2().setUrl(request.message.server.url);
+                    }
+                    sendResponse()
                 });
+                return true;//异步消息发送
                 break;
             case 102:
                 //获取当前服务器配置

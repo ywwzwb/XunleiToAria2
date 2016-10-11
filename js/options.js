@@ -161,6 +161,8 @@ $(function () {
         var name = $("#update_server_name").val().trim();
         var url = $("#update_server_url").val().trim();
         var downloadPath = $("#update_server_downloadpath").val().trim();
+        $("#update_server_info").hide();
+        $("#update_server_error").hide();
         if (serverID.length) {
             messageSendToBackground(103, serverID, function (response) {
                 var server = response.message;
@@ -169,6 +171,68 @@ $(function () {
                     $("#main_form").show();
                     $("#update_form").hide();
                 } else {
+                    if (url == server.url) {
+                        // url 没有改动
+                        server.name = name;
+                        server.downloadPath = downloadPath;
+                        $("#update_server_info").hide();
+                        $("#update_server_error").hide();
+                        messageSendToBackground(101, {
+                            serverid: server.id,
+                            server: server,
+                            urlchange: false
+                        }, function () {
+                            refreshMainForm();
+                            $("#main_form").show();
+                            $("#update_form").hide();
+                        });
+                    } else {
+                        //测试url 是否可以连接
+                        $("#update_server_info").show();
+                        var timer = setInterval(function () {
+                            switch ($("#update_server_info").text()) {
+                                case "连接中":
+                                    $("#update_server_info").text("连接中.");
+                                    break;
+                                case "连接中.":
+                                    $("#update_server_info").text("连接中..");
+                                    break;
+                                case "连接中..":
+                                    $("#update_server_info").text("连接中...");
+                                    break;
+                                default:
+                                    $("#update_server_info").text("连接中");
+                                    break;
+                            }
+                        }, 200);
+                        messageSendToBackground(100, url, function (response) {
+                            clearInterval(timer);
+                            if (response.code == 1) {
+                                $("#update_server_info").text("已连接, 版本" + response.message);
+                                server.name = name;
+                                server.url = url;
+                                server.downloadPath = downloadPath;
+                                server.version = response.message;
+                                setTimeout(function () {
+                                    $("#update_server_info").hide();
+                                    $("#update_server_error").hide();
+                                    messageSendToBackground(101, {
+                                        serverid: server.id,
+                                        server: server,
+                                        urlchange: true
+                                    }, function () {
+
+                                        refreshMainForm();
+                                        $("#main_form").show();
+                                        $("#update_form").hide();
+                                    });
+                                }, 1000);
+                            } else {
+                                $("#update_server_info").hide();
+                                $("#update_server_error").show().text("连接失败");
+                            }
+                        });
+                    }
 
                 }
             });

@@ -34,9 +34,9 @@
         </select>
         <span class="help-block">
             <span id="selected_server_span" style="display: none">
-                服务器地址: <span id="selected_server_url"></span><br/>
+                服务器地址: <span id="selected_server_url" style="word-break: break-all;"></span><br/>
                 服务器版本: <span id="selected_server_version"></span> <button class="btn btn-primary btn-xs" id="test_selected_server" data-serverid="">测试</button><br/>
-                下载路径: <span id="selected_server_downloadpath"></span><br/>
+                下载路径: <span id="selected_server_downloadpath" style="word-break: break-all;"></span><br/>
                 <button class="btn btn-primary btn-xs" id="update_selected_server" data-serverid="">修改</button>
             </span>
             <span id="no_selected_server_span" style="display: none">没有选择任何服务器</span>
@@ -61,6 +61,7 @@
             <span class="help-block">注意: 请输入绝对路径, 留空使用默认值</span>
         </div>
         <div class="alert alert-danger" id ="update_server_error" role="alert" style="display: none"></div>
+        <div class="alert alert-info" id ="update_server_info" role="alert" style="display: none"></div>
         <button class="btn btn-primary" id="update_server_save" data-serverid="">保存</button>
         <button class="btn btn-success" id="update_server_cancel" style="display: none">取消</button>
         <button class="btn btn-success" id="update_server_back" style="display: none">返回</button>
