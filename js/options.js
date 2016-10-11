@@ -121,7 +121,6 @@ $(function () {
                 }
                 var li = [
                     '<li class="list-group-item">',
-                    '    <input name="selected_server" type="radio" data-serverid="' + server.id + '"/>',
                     '    ' + server.name,
                     '    <span class="operate-btn-group-right">',
                     '        <a href="#" class = "list_profile_show" data-serverid="' + server.id + '">详细</a>',
@@ -139,7 +138,6 @@ $(function () {
                 ].join("\n");
                 $(li).appendTo($("#list_profile_container"));
             }
-            $("#list_profile_container input[data-serverid='" + selectedServerID + "']").attr("checked", true);
         });
     }
 
@@ -205,6 +203,12 @@ $(function () {
         $("#update_server_cancel").hide();
         $("#update_server_back").show();
         $("#update_form").show();
+        $("#update_server_save").attr("disabled", true);
+        $("#update_server_save").attr("data-serverid","");
+        $("#update_server_name").val("");
+        $("#update_server_url").val("");
+        $("#update_server_downloadpath").val("");
+        $("#update_server_downloadpath").val("");
     });
     $("#update_server_back").click(function () {
         $("#list_profile").show();
@@ -251,78 +255,83 @@ $(function () {
                 refreshMainForm();
             }
         };
-        if (serverID.length) {
-            //修改
-            messageSendToBackground(103, serverID, function (response) {
-                var server = response.message;
-                if (name == server.name && url == server.url && downloadPath == server.downloadPath) {
-                    //没有任何修改
-                    back();
+        messageSendToBackground(103, serverID, function (response) {
+            var server = undefined;
+            if (response && response.message){
+                server = response.message;
+            } else {
+                server = {
+                    id:-1,
+                    name:"",
+                    url:"",
+                    downloadPath:""
+                };
+            }
+            if (name == server.name && url == server.url && downloadPath == server.downloadPath) {
+                //没有任何修改
+                back();
+            } else {
+                if (url == server.url) {
+                    // url 没有改动
+                    server.name = name;
+                    server.downloadPath = downloadPath;
+                    $("#update_server_info").hide();
+                    $("#update_server_error").hide();
+                    messageSendToBackground(101, {
+                        serverid: server.id,
+                        server: server,
+                        reloadaria2: false
+                    }, function () {
+                        reloadUI();
+                        back();
+                    });
                 } else {
-                    if (url == server.url) {
-                        // url 没有改动
-                        server.name = name;
-                        server.downloadPath = downloadPath;
-                        $("#update_server_info").hide();
-                        $("#update_server_error").hide();
-                        messageSendToBackground(101, {
-                            serverid: server.id,
-                            server: server,
-                            reloadaria2: false
-                        }, function () {
-                            reloadUI();
-                            back();
-                        });
-                    } else {
-                        //测试url 是否可以连接
-                        $("#update_server_info").show();
-                        var timer = setInterval(function () {
-                            switch ($("#update_server_info").text()) {
-                                case "连接中":
-                                    $("#update_server_info").text("连接中.");
-                                    break;
-                                case "连接中.":
-                                    $("#update_server_info").text("连接中..");
-                                    break;
-                                case "连接中..":
-                                    $("#update_server_info").text("连接中...");
-                                    break;
-                                default:
-                                    $("#update_server_info").text("连接中");
-                                    break;
-                            }
-                        }, 200);
-                        messageSendToBackground(100, url, function (response) {
-                            clearInterval(timer);
-                            if (response.code == 1) {
-                                $("#update_server_info").text("已连接, 版本" + response.message);
-                                server.name = name;
-                                server.url = url;
-                                server.downloadPath = downloadPath;
-                                server.version = response.message;
-                                setTimeout(function () {
-                                    $("#update_server_info").hide();
-                                    $("#update_server_error").hide();
-                                    messageSendToBackground(101, {
-                                        serverid: server.id,
-                                        server: server,
-                                        reloadaria2: true
-                                    }, function () {
-                                        reloadUI();
-                                        back();
-                                    });
-                                }, 1000);
-                            } else {
+                    //测试url 是否可以连接
+                    $("#update_server_info").show();
+                    var timer = setInterval(function () {
+                        switch ($("#update_server_info").text()) {
+                            case "连接中":
+                                $("#update_server_info").text("连接中.");
+                                break;
+                            case "连接中.":
+                                $("#update_server_info").text("连接中..");
+                                break;
+                            case "连接中..":
+                                $("#update_server_info").text("连接中...");
+                                break;
+                            default:
+                                $("#update_server_info").text("连接中");
+                                break;
+                        }
+                    }, 200);
+                    messageSendToBackground(100, url, function (response) {
+                        clearInterval(timer);
+                        if (response.code == 1) {
+                            $("#update_server_info").text("已连接, 版本" + response.message);
+                            server.name = name;
+                            server.url = url;
+                            server.downloadPath = downloadPath;
+                            server.version = response.message;
+                            setTimeout(function () {
                                 $("#update_server_info").hide();
-                                $("#update_server_error").show().text("连接错误");
-                            }
-                        });
-                    }
+                                $("#update_server_error").hide();
+                                messageSendToBackground(101, {
+                                    serverid: server.id,
+                                    server: server,
+                                    reloadaria2: true
+                                }, function (response) {
+                                    reloadUI();
+                                    back();
+                                });
+                            }, 1000);
+                        } else {
+                            $("#update_server_info").hide();
+                            $("#update_server_error").show().text("连接错误");
+                        }
+                    });
                 }
-            });
-        } else {
-            //新增服务器
-        }
+            }
+        });
     });
     $(document).on("click", ".list_profile_test, #test_selected_server", function () {
         var versionspan = $(this).prev();
@@ -365,4 +374,5 @@ $(function () {
         });
     });
     init();
-});
+})
+;

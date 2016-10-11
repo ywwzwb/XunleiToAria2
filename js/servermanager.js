@@ -6,8 +6,8 @@ var ServerManager = {
     init: function () {
         var instance = {};
         var db = undefined;
-        if (!localStorage.currentServerID) {
-            localStorage.currentServerID = 1;
+        if (!localStorage.autoInCreaseServerID) {
+            localStorage.autoInCreaseServerID = 1;
         }
         var request = indexedDB.open("ServerList", 1);
         request.onerror = function (event) {
@@ -21,7 +21,7 @@ var ServerManager = {
             var objectStore = db.createObjectStore("servers", {keyPath: "id"});
             if (localStorage.serverUrl) {
                 objectStore.add({
-                    id: localStorage.currentServerID++,
+                    id: localStorage.autoInCreaseServerID++,
                     name: "Aria2",
                     url: localStorage.serverUrl,
                     downloadPath: localStorage.downloadPath,
@@ -35,8 +35,7 @@ var ServerManager = {
 
         };
 
-        instance.addServer = function (name, url, downloadPath, version, callback) {
-            version = version || 0;// 0 表示未知, -1 表示连接错误
+        instance.addServer = function (server, callback) {
             callback = callback || function () {
                 };
             var transaction = db.transaction(["servers"], "readwrite");
@@ -44,13 +43,8 @@ var ServerManager = {
                 callback(false);
             };
             var objectStore = transaction.objectStore("servers");
-            var request = objectStore.add({
-                id: localStorage.currentServerID++,
-                name: name,
-                url: url,
-                downloadPath: downloadPath,
-                version: version
-            });
+            server.id = localStorage.autoInCreaseServerID++;
+            var request = objectStore.add(server);
             request.onsuccess = function (event) {
                 callback(true, event.target.result);
             };

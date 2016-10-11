@@ -63,7 +63,7 @@ chrome.runtime.onMessage.addListener(
         switch (request.code) {
             case 100:
                 //测试服务器连接
-                Aria2.init().setUrl(request.message, function(success, version){
+                Aria2.init().setUrl(request.message, function (success, version) {
                     if (success) {
                         sendResponse({code: 1, message: version});
                     } else {
@@ -72,15 +72,25 @@ chrome.runtime.onMessage.addListener(
                 });
                 return true;//异步消息发送
                 break;
-
             case 101:
                 //保存服务器
-                ServerManager.shareManager().updateServer(request.message.serverid, request.message.server, function(success){
-                    if(request.message.reloadaria2 && request.message.serverid == ServerManager.shareManager().getCurrentServerID()) {
-                        Aria2.shareAria2().setUrl(request.message.server.url);
-                    }
-                    sendResponse()
-                });
+                var serverid = request.message.serverid;
+                if (serverid == -1) {
+                    ServerManager.shareManager().addServer(request.message.server, function(success, serverid) {
+                        sendResponse({
+                            code: 1,
+                            message: serverid
+                        });
+                    });
+                } else {
+                    ServerManager.shareManager().updateServer(request.message.serverid, request.message.server, function (success) {
+                        if (request.message.reloadaria2 && request.message.serverid == ServerManager.shareManager().getCurrentServerID()) {
+                            Aria2.shareAria2().setUrl(request.message.server.url);
+                        }
+                        sendResponse()
+                    });
+                }
+
                 return true;//异步消息发送
                 break;
             case 102:
@@ -98,6 +108,10 @@ chrome.runtime.onMessage.addListener(
                 break;
             case 103:
                 //获取某服务器配置
+                if (!request.message) {
+                    sendResponse();
+                    return;
+                }
                 ServerManager.shareManager().getServer(request.message, function (success, server) {
                     sendResponse({
                         code: 1,
