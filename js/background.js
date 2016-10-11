@@ -84,7 +84,7 @@ chrome.runtime.onMessage.addListener(
                 return true;//异步消息发送
                 break;
             case 102:
-                //获取当前服务器配置
+                //获取当前所有服务器配置
                 ServerManager.shareManager().getAllServers(function (success, servers) {
                     sendResponse({
                         code: 1,

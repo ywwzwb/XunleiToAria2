@@ -54,7 +54,7 @@ $(function () {
             $("#selected_server_version").text(version);
         }
         var downloadPath = server.downloadPath;
-        if (downloadPath && downloadPath.length == 0) {
+        if (downloadPath || downloadPath.length == 0) {
             $("#selected_server_downloadpath").text("使用默认值");
         } else {
             $("#selected_server_downloadpath").text(downloadPath);
@@ -124,6 +124,63 @@ $(function () {
     $("#profile_list").click(function () {
         $("#main_form").hide();
         $("#list_profile").show();
+        $("#list_profile_container").html("");
+        messageSendToBackground(102, null, function (response) {
+            var servers = response.message.servers;
+            if (servers.length == 0) {
+                $("#list_profile_no_data").show();
+                return;
+            }
+            $("#list_profile_no_data").hide();
+            for (var serverid in servers) {
+                var server = servers[serverid];
+                if (serverid == selectedServerID) {
+
+                }
+                var version = server.version;
+                if (server.version == 0) {
+                    version = "未知版本";
+                } else if (server.version == -1) {
+                    version = "连接错误";
+                }
+                var downloadPath = server.downloadPath;
+                if (downloadPath || downloadPath.length == 0) {
+                    downloadPath = "使用默认值";
+                }
+                var li = [
+                    '<li class="list-group-item">',
+                    '    <input name="selected_server" type="radio" data-serverid="' + server.id + '"/>',
+                    '    ' + server.name,
+                    '    <span class="operate-btn-group-right">',
+                    '        <a href="#" class = "list_profile_show" data-serverid="' + server.id + '">详细</a>',
+                    '        <a href="#" class = "list_profile_hide" style="display: none" data-serverid="' + server.id + '">收起</a>',
+                    '        <a href="#" class = "list_profile_update" data-serverid="' + server.id + '">修改</a>',
+                    '        <a href="#" class = "list_profile_delete text-danger" data-serverid="' + server.id + '">删除</a>',
+                    '    </span>',
+                    '    <hr style="display: none"/>',
+                    '    <p style="display: none">',
+                    '        服务器地址: <span class="longtextspan">' + server.url + '</span><br/>',
+                    '        服务器版本: <span>' + version + '</span> <button class="list_profile_test btn btn-primary btn-xs" data-serverid="' + server.id + '">测试</button><br/>',
+                    '        下载路径: <span class="longtextspan">' + server.downloadPath + '</span><br/>',
+                    '    </p>',
+                    '</li>'
+                ].join("\n");
+                $(li).appendTo($("#list_profile_container"));
+            }
+            $("#list_profile_container input[data-serverid='" + selectedServerID + "']").attr("checked", true);
+        });
+    });
+    $(document).on("click", ".list_profile_show", function () {
+        $(this).hide();
+        $(this).next().show();
+        $(this).parents(".list-group-item").children("hr").show();
+        $(this).parents(".list-group-item").children("p").show();
+    });
+    $(document).on("click", ".list_profile_hide", function () {
+        $(this).hide();
+        $(this).prev().show();
+        $(this).parents(".list-group-item").children("hr").hide();
+        $(this).parents(".list-group-item").children("p").hide();
     });
     $("#list_form_back").click(function () {
         $("#main_form").show();
