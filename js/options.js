@@ -63,11 +63,14 @@ $(function () {
         $("#update_selected_server").attr("data-serverid", server.id);
     }
 
-    function displayServerOnUpdateForm(server) {
+    function displayServerOnUpdateForm(server, backtoserverlist) {
         $("#update_server_name").val(server.name);
         $("#update_server_url").val(server.url);
         $("#update_server_downloadpath").val(server.downloadPath);
         $("#update_server_save").attr("data-serverid", server.id);
+        if (backtoserverlist) {
+            $("#update_server_save").attr("data-backtoserverlist", "1");
+        }
     }
 
     function testServer(setting) {
@@ -95,35 +98,7 @@ $(function () {
         });
     }
 
-    $("#save").click(function () {
-        var serverUrl = $('#serverUrl').val();
-        var downloadPath = $('#downloadPath').val();
-        testServer({url: serverUrl, downloadPath: downloadPath});
-    });
-    $("#reset").click(function () {
-        messageSendToBackground(101, null, function (response) {
-            $('#serverUrl').val(response.message.serverUrl);
-            $('#downloadPath').val(response.message.downloadPath);
-            testServer()
-        });
-    });
-    $("#update_selected_server").click(function () {
-        $("#main_form").hide();
-        $("#update_server_cancel").show();
-        $("#update_server_back").hide();
-        $("#update_form").show();
-        $("#update_server_save").attr("disabled", false);
-        messageSendToBackground(103, $(this).attr("data-serverid"), function (response) {
-            displayServerOnUpdateForm(response.message);
-        });
-    });
-    $("#update_server_cancel").click(function () {
-        $("#main_form").show();
-        $("#update_form").hide();
-    });
-    $("#profile_list").click(function () {
-        $("#main_form").hide();
-        $("#list_profile").show();
+    function refreshProfileList() {
         $("#list_profile_container").html("");
         messageSendToBackground(102, null, function (response) {
             var servers = response.message.servers;
@@ -134,9 +109,6 @@ $(function () {
             $("#list_profile_no_data").hide();
             for (var serverid in servers) {
                 var server = servers[serverid];
-                if (serverid == selectedServerID) {
-
-                }
                 var version = server.version;
                 if (server.version == 0) {
                     version = "未知版本";
@@ -169,6 +141,38 @@ $(function () {
             }
             $("#list_profile_container input[data-serverid='" + selectedServerID + "']").attr("checked", true);
         });
+    }
+
+    $("#save").click(function () {
+        var serverUrl = $('#serverUrl').val();
+        var downloadPath = $('#downloadPath').val();
+        testServer({url: serverUrl, downloadPath: downloadPath});
+    });
+    $("#reset").click(function () {
+        messageSendToBackground(101, null, function (response) {
+            $('#serverUrl').val(response.message.serverUrl);
+            $('#downloadPath').val(response.message.downloadPath);
+            testServer()
+        });
+    });
+    $("#update_selected_server").click(function () {
+        $("#main_form").hide();
+        $("#update_server_cancel").show();
+        $("#update_server_back").hide();
+        $("#update_form").show();
+        $("#update_server_save").attr("disabled", false);
+        messageSendToBackground(103, $(this).attr("data-serverid"), function (response) {
+            displayServerOnUpdateForm(response.message);
+        });
+    });
+    $("#update_server_cancel").click(function () {
+        $("#main_form").show();
+        $("#update_form").hide();
+    });
+    $("#profile_list").click(function () {
+        $("#main_form").hide();
+        $("#list_profile").show();
+        refreshProfileList();
     });
     $(document).on("click", ".list_profile_show", function () {
         $(this).hide();
@@ -181,6 +185,16 @@ $(function () {
         $(this).prev().show();
         $(this).parents(".list-group-item").children("hr").hide();
         $(this).parents(".list-group-item").children("p").hide();
+    });
+    $(document).on("click", ".list_profile_update", function () {
+        $("#list_profile").hide();
+        $("#update_server_cancel").hide();
+        $("#update_server_back").show();
+        $("#update_form").show();
+        $("#update_server_save").attr("disabled", false);
+        messageSendToBackground(103, $(this).attr("data-serverid"), function (response) {
+            displayServerOnUpdateForm(response.message, true);
+        });
     });
     $("#list_form_back").click(function () {
         $("#main_form").show();
@@ -220,14 +234,30 @@ $(function () {
         var downloadPath = $("#update_server_downloadpath").val().trim();
         $("#update_server_info").hide();
         $("#update_server_error").hide();
+        var backtolist = $(this).attr("data-backtoserverlist") == 1 || serverID.length == 0;
+        var back = function () {
+            if (backtolist) {
+                $("#list_profile").show();
+                $("#update_form").hide();
+            } else {
+                $("#main_form").show();
+                $("#update_form").hide();
+            }
+        };
+        var reloadUI = function () {
+            if (backtolist) {
+                refreshProfileList();
+            } else {
+                refreshMainForm();
+            }
+        };
         if (serverID.length) {
             //修改
             messageSendToBackground(103, serverID, function (response) {
                 var server = response.message;
                 if (name == server.name && url == server.url && downloadPath == server.downloadPath) {
                     //没有任何修改
-                    $("#main_form").show();
-                    $("#update_form").hide();
+                    back();
                 } else {
                     if (url == server.url) {
                         // url 没有改动
@@ -240,9 +270,8 @@ $(function () {
                             server: server,
                             reloadaria2: false
                         }, function () {
-                            refreshMainForm();
-                            $("#main_form").show();
-                            $("#update_form").hide();
+                            reloadUI();
+                            back();
                         });
                     } else {
                         //测试url 是否可以连接
@@ -279,10 +308,8 @@ $(function () {
                                         server: server,
                                         reloadaria2: true
                                     }, function () {
-
-                                        refreshMainForm();
-                                        $("#main_form").show();
-                                        $("#update_form").hide();
+                                        reloadUI();
+                                        back();
                                     });
                                 }, 1000);
                             } else {
