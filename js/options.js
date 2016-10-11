@@ -164,6 +164,7 @@ $(function () {
         $("#update_server_info").hide();
         $("#update_server_error").hide();
         if (serverID.length) {
+            //修改
             messageSendToBackground(103, serverID, function (response) {
                 var server = response.message;
                 if (name == server.name && url == server.url && downloadPath == server.downloadPath) {
@@ -180,7 +181,7 @@ $(function () {
                         messageSendToBackground(101, {
                             serverid: server.id,
                             server: server,
-                            urlchange: false
+                            reloadaria2: false
                         }, function () {
                             refreshMainForm();
                             $("#main_form").show();
@@ -219,7 +220,7 @@ $(function () {
                                     messageSendToBackground(101, {
                                         serverid: server.id,
                                         server: server,
-                                        urlchange: true
+                                        reloadaria2: true
                                     }, function () {
 
                                         refreshMainForm();
@@ -229,26 +230,54 @@ $(function () {
                                 }, 1000);
                             } else {
                                 $("#update_server_info").hide();
-                                $("#update_server_error").show().text("连接失败");
+                                $("#update_server_error").show().text("连接错误");
                             }
                         });
                     }
-
                 }
             });
         } else {
-
+            //新增服务器
         }
-        var serverInfo = {
-            id: serverID,
-            name: $("#update_server_name").val(),
-            url: $("#update_server_url").val(),
-            downloadPath: $("#update_server_downloadpath").val(),
-            version: 0
-        };
-        // messageSendToBackground(103, selectedServerID, function (response) {
-        //     displayServerOnMainForm(response.message);
-        // });
+    });
+    $("#test_selected_server").click(function () {
+        var timer = setInterval(function () {
+            switch ($("#selected_server_version").text()) {
+                case "连接中":
+                    $("#selected_server_version").text("连接中.");
+                    break;
+                case "连接中.":
+                    $("#selected_server_version").text("连接中..");
+                    break;
+                case "连接中..":
+                    $("#selected_server_version").text("连接中...");
+                    break;
+                default:
+                    $("#selected_server_version").text("连接中");
+                    break;
+            }
+        }, 200);
+        messageSendToBackground(103, $(this).attr("data-serverid"), function (response) {
+            var server = response.message;
+            messageSendToBackground(100, server.url, function (response) {
+                setTimeout(function () {
+                    clearInterval(timer);
+                    if (response.code == 1) {
+                        server.version = response.message;
+                        $("#selected_server_version").show().text(response.message);
+                    } else {
+                        server.version = -1;
+                        $("#selected_server_version").show().text("连接错误");
+                    }
+                    server.version = response.message;
+                    messageSendToBackground(101, {
+                        serverid: server.id,
+                        server: server,
+                        reloadaria2: true
+                    });
+                }, 1000);
+            });
+        });
     });
     init();
 });

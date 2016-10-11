@@ -71,27 +71,12 @@ chrome.runtime.onMessage.addListener(
                     }
                 });
                 return true;//异步消息发送
-                
-                //
-                // //设置 aria2 链接/ 测试服务器连接
-                // if (request.message) {
-                //     localStorage.serverUrl = request.message.url;
-                //     localStorage.downloadPath = request.message.downloadPath;
-                // }
-                // Aria2.shareAria2().setUrl(localStorage.serverUrl, function (serverOk, message) {
-                //     if (serverOk) {
-                //         sendResponse({code: 1, message: message});
-                //     } else {
-                //         sendResponse({code: 0});
-                //     }
-                // });
-                // return true;//异步消息发送
                 break;
 
             case 101:
                 //保存服务器
                 ServerManager.shareManager().updateServer(request.message.serverid, request.message.server, function(success){
-                    if(request.message.urlchange && request.message.serverid == ServerManager.shareManager().getCurrentServerID()) {
+                    if(request.message.reloadaria2 && request.message.serverid == ServerManager.shareManager().getCurrentServerID()) {
                         Aria2.shareAria2().setUrl(request.message.server.url);
                     }
                     sendResponse()

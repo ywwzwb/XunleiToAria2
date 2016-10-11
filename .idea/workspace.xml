@@ -4,8 +4,6 @@
     <list default="true" id="e822d445-3753-4c23-9728-cf8515f8a402" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/background.js" afterPath="$PROJECT_DIR$/js/background.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/options.js" afterPath="$PROJECT_DIR$/js/options.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/servermanager.js" afterPath="$PROJECT_DIR$/js/servermanager.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/options.html" afterPath="$PROJECT_DIR$/options.html" />
     </list>
     <ignored path="xunleitoaria2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,8 +28,8 @@
       <file leaf-file-name="options.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/options.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="38" column="92" selection-start-line="38" selection-start-column="92" selection-end-line="38" selection-end-column="92" />
+            <state relative-caret-position="150">
+              <caret line="37" column="144" selection-start-line="37" selection-start-column="130" selection-end-line="37" selection-end-column="144" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#0;n#span#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -52,7 +50,7 @@
       <file leaf-file-name="servermanager.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/servermanager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="256">
+            <state relative-caret-position="-134">
               <caret line="73" column="51" selection-start-line="73" selection-start-column="51" selection-end-line="73" selection-end-column="51" />
               <folding>
                 <element signature="e#0#44#0" expanded="false" />
@@ -64,8 +62,8 @@
       <file leaf-file-name="background.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/background.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="96" column="34" selection-start-line="96" selection-start-column="34" selection-end-line="96" selection-end-column="34" />
+            <state relative-caret-position="303">
+              <caret line="78" column="50" selection-start-line="78" selection-start-column="50" selection-end-line="78" selection-end-column="50" />
               <folding />
             </state>
           </provider>
@@ -84,10 +82,10 @@
       <file leaf-file-name="options.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/options.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="184" column="46" selection-start-line="184" selection-start-column="46" selection-end-line="184" selection-end-column="46" />
+            <state relative-caret-position="273">
+              <caret line="258" column="15" selection-start-line="258" selection-start-column="15" selection-end-line="258" selection-end-column="15" />
               <folding>
-                <element signature="e#7537#8315#0" expanded="false" />
+                <element signature="e#6508#6646#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -137,7 +135,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-40" />
+    <option name="x" value="-113" />
     <option name="y" value="23" />
     <option name="width" value="1229" />
     <option name="height" value="777" />
@@ -471,7 +469,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-40" y="23" width="1229" height="777" extended-state="0" />
+    <frame x="-113" y="23" width="1229" height="777" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22577928" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -527,7 +525,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="7" />
+      <option name="time" value="8" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -874,10 +872,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/background.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="303">
+          <caret line="78" column="50" selection-start-line="78" selection-start-column="50" selection-end-line="78" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/servermanager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-134">
+          <caret line="73" column="51" selection-start-line="73" selection-start-column="51" selection-end-line="73" selection-end-column="51" />
+          <folding>
+            <element signature="e#0#44#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/options.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="38" column="92" selection-start-line="38" selection-start-column="92" selection-end-line="38" selection-end-column="92" />
+        <state relative-caret-position="150">
+          <caret line="37" column="144" selection-start-line="37" selection-start-column="130" selection-end-line="37" selection-end-column="144" />
           <folding>
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#span#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -894,30 +910,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/servermanager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="73" column="51" selection-start-line="73" selection-start-column="51" selection-end-line="73" selection-end-column="51" />
-          <folding>
-            <element signature="e#0#44#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/background.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="96" column="34" selection-start-line="96" selection-start-column="34" selection-end-line="96" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/options.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="184" column="46" selection-start-line="184" selection-start-column="46" selection-end-line="184" selection-end-column="46" />
+        <state relative-caret-position="273">
+          <caret line="258" column="15" selection-start-line="258" selection-start-column="15" selection-end-line="258" selection-end-column="15" />
           <folding>
-            <element signature="e#7537#8315#0" expanded="false" />
+            <element signature="e#6508#6646#0" expanded="false" />
           </folding>
         </state>
       </provider>
