@@ -297,20 +297,21 @@ $(function () {
             //新增服务器
         }
     });
-    $("#test_selected_server").click(function () {
+    $(document).on("click", ".list_profile_test, #test_selected_server", function () {
+        var versionspan = $(this).prev();
         var timer = setInterval(function () {
-            switch ($("#selected_server_version").text()) {
+            switch (versionspan.text()) {
                 case "连接中":
-                    $("#selected_server_version").text("连接中.");
+                    versionspan.text("连接中.");
                     break;
                 case "连接中.":
-                    $("#selected_server_version").text("连接中..");
+                    versionspan.text("连接中..");
                     break;
                 case "连接中..":
-                    $("#selected_server_version").text("连接中...");
+                    versionspan.text("连接中...");
                     break;
                 default:
-                    $("#selected_server_version").text("连接中");
+                    versionspan.text("连接中");
                     break;
             }
         }, 200);
@@ -321,10 +322,10 @@ $(function () {
                     clearInterval(timer);
                     if (response.code == 1) {
                         server.version = response.message;
-                        $("#selected_server_version").show().text(response.message);
+                        versionspan.show().text(response.message);
                     } else {
                         server.version = -1;
-                        $("#selected_server_version").show().text("连接错误");
+                        versionspan.show().text("连接错误");
                     }
                     server.version = response.message;
                     messageSendToBackground(101, {

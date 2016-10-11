@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e822d445-3753-4c23-9728-cf8515f8a402" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/background.js" afterPath="$PROJECT_DIR$/js/background.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/options.js" afterPath="$PROJECT_DIR$/js/options.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/options.html" afterPath="$PROJECT_DIR$/options.html" />
     </list>
     <ignored path="xunleitoaria2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -85,15 +83,14 @@
       <file leaf-file-name="options.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/options.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="162" column="56" selection-start-line="162" selection-start-column="56" selection-end-line="162" selection-end-column="56" />
+            <state relative-caret-position="230">
+              <caret line="183" column="7" selection-start-line="183" selection-start-column="7" selection-end-line="183" selection-end-column="7" />
               <folding>
                 <element signature="e#8937#12991#0" expanded="false" />
                 <element signature="e#9533#9671#0" expanded="false" />
-                <marker date="1476175528000" expanded="true" signature="6116:6129" ph="..." />
-                <marker date="1476175528000" expanded="true" signature="6485:6498" ph="..." />
-                <marker date="1476175528000" expanded="true" signature="6539:6552" ph="..." />
-                <marker date="1476175528000" expanded="false" signature="13043:14628" ph="{...}" />
+                <marker date="1476176111000" expanded="true" signature="6116:6129" ph="..." />
+                <marker date="1476176111000" expanded="true" signature="6485:6498" ph="..." />
+                <marker date="1476176111000" expanded="true" signature="6539:6552" ph="..." />
               </folding>
             </state>
           </provider>
@@ -144,8 +141,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-2" />
-    <option name="y" value="557" />
+    <option name="x" value="52" />
+    <option name="y" value="23" />
     <option name="width" value="1229" />
     <option name="height" value="777" />
   </component>
@@ -478,7 +475,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-2" y="557" width="1229" height="777" extended-state="0" />
+    <frame x="52" y="23" width="1229" height="777" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22577928" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -931,15 +928,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/options.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="162" column="56" selection-start-line="162" selection-start-column="56" selection-end-line="162" selection-end-column="56" />
+        <state relative-caret-position="230">
+          <caret line="183" column="7" selection-start-line="183" selection-start-column="7" selection-end-line="183" selection-end-column="7" />
           <folding>
             <element signature="e#8937#12991#0" expanded="false" />
             <element signature="e#9533#9671#0" expanded="false" />
-            <marker date="1476175528000" expanded="true" signature="6116:6129" ph="..." />
-            <marker date="1476175528000" expanded="true" signature="6485:6498" ph="..." />
-            <marker date="1476175528000" expanded="true" signature="6539:6552" ph="..." />
-            <marker date="1476175528000" expanded="false" signature="13043:14628" ph="{...}" />
+            <marker date="1476176111000" expanded="true" signature="6116:6129" ph="..." />
+            <marker date="1476176111000" expanded="true" signature="6485:6498" ph="..." />
+            <marker date="1476176111000" expanded="true" signature="6539:6552" ph="..." />
           </folding>
         </state>
       </provider>
