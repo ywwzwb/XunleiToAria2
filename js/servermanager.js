@@ -97,7 +97,7 @@ var ServerManager = {
             var objectStore = transaction.objectStore("servers");
             var request = objectStore.get(serverid);
             request.onsuccess = function (event) {
-                callback(true, request.result);
+                callback(true, this.result);
             };
         };
         instance.getAllServers = function (callback) {

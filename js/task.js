@@ -39,15 +39,23 @@ var Task = {
                         instance.sendMessageToConentScript(ContentMessageCode.taskEnd);
                     }, 1000);
                 } else {
-                    Aria2.shareAria2().download({
-                        url:instance.url
-                    }, localStorage.downloadPath, function () {
-                        instance.sendMessageToConentScript(ContentMessageCode.aria2DownloadFinish);
-                        instance.sendMessageToConentScript(ContentMessageCode.taskEnd);
-                    }, function () {
-                        instance.sendMessageToConentScript(ContentMessageCode.aria2DownloadFail);
-                        instance.sendMessageToConentScript(ContentMessageCode.taskEnd);
+                    ServerManager.shareManager().getCurrentServer(function (success, server) {
+                        if (success && server) {
+                            Aria2.shareAria2().download({
+                                url: instance.url
+                            }, server.downloadPath, function () {
+                                instance.sendMessageToConentScript(ContentMessageCode.aria2DownloadFinish);
+                                instance.sendMessageToConentScript(ContentMessageCode.taskEnd);
+                            }, function () {
+                                instance.sendMessageToConentScript(ContentMessageCode.aria2DownloadFail);
+                                instance.sendMessageToConentScript(ContentMessageCode.taskEnd);
+                            });
+                        } else {
+                            instance.sendMessageToConentScript(ContentMessageCode.aria2DownloadFail);
+                            instance.sendMessageToConentScript(ContentMessageCode.taskEnd);
+                        }
                     });
+
                 }
             } else {
                 XunleiAPI.init(instance).doTasks()

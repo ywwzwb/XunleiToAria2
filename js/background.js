@@ -20,17 +20,24 @@ chrome.runtime.onInstalled.addListener(function (previousVersion) {
         if (!ServerManager.shareManager().getCurrentServerID()) {
             chrome.runtime.openOptionsPage();
         }
-    }, 100);
+    }, 300);
 });
 setTimeout(function () {
     ServerManager.shareManager().getCurrentServer(function (success, server) {
         if (success) {
-            Aria2.shareAria2().setUrl(server.url);
+            Aria2.shareAria2().setUrl(server.url, function (success, version) {
+                if (success) {
+                    server.version = version;
+                } else {
+                    server.version = -1;
+                }
+                ServerManager.shareManager().updateServer(server.id, server);
+            });
         } else {
-            console.warn("服务器连接失败");
+            console.warn("服务器获取失败");
         }
     });
-}, 100);
+}, 300);
 chrome.browserAction.onClicked.addListener(function () {
     chrome.tabs.create({
         url: "http://lixian.xunlei.com"
@@ -136,9 +143,26 @@ chrome.runtime.onMessage.addListener(
             case 105:
                 //选中某服务器
                 ServerManager.shareManager().setCurrentServerID(request.message);
-                sendResponse({
-                    code:1
+                ServerManager.shareManager().getCurrentServer(function (success, server) {
+                    if (success && server) {
+                        Aria2.shareAria2().setUrl(server.url, function (success, version) {
+                            if (success) {
+                                sendResponse({
+                                    code: 1
+                                });
+                            } else {
+                                sendResponse({
+                                    code: 0
+                                });
+                            }
+                        })
+                    } else {
+                        sendResponse({
+                            code: 0
+                        });
+                    }
                 });
+                return true;//异步消息发送
                 break;
             case 200:
                 //迅雷页面单普通任务下载

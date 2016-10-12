@@ -26,7 +26,7 @@ var XunleiAPI = {
                     if (!output.startsWith("queryUrl")) {
                         XunleiAPI.xunleiUserID = undefined;
                         task.sendMessageToConentScript(ContentMessageCode.xunleiloginFail);
-                        instance.tasks =[];
+                        instance.tasks = [];
                         task.sendMessageToConentScript(ContentMessageCode.taskEnd);
                         return
                     }
@@ -96,7 +96,7 @@ var XunleiAPI = {
                 success: function (output, status, xhr) {
                     //{"id":"1540202127827456","avail_space":"1123741114859670","time":1.0901968479156,"progress":1})
                     output = JSON.parse(output.substring(7, output.length - 1));
-                    if ((output instanceof Array ) && output.length == 0){
+                    if ((output instanceof Array ) && output.length == 0) {
                         //还没完成
                         task.sendMessageToConentScript(ContentMessageCode.xunleiDownloading);
                         callback();
@@ -218,7 +218,7 @@ var XunleiAPI = {
                             }
                         });
                         if (taskjson && taskjson.progress == 100 && taskjson.lixian_url) {
-                             aria2Tasks.push({
+                            aria2Tasks.push({
                                 name: taskjson.taskname.replace(/\\\/?/g, "/"),
                                 header: "Cookie:" + XunleiAPI.xunleiGDriverID,
                                 url: taskjson.lixian_url
@@ -234,20 +234,28 @@ var XunleiAPI = {
             )
         };
         var startAria2Download = function () {
-            if(aria2Tasks.length == 0){
+            if (aria2Tasks.length == 0) {
                 firstTask.sendMessageToConentScript(ContentMessageCode.taskEnd);
                 return;
             }
-            Aria2.shareAria2().batchDownload(aria2Tasks, localStorage.downloadPath, function () {
-                firstTask.sendMessageToConentScript(ContentMessageCode.aria2DownloadFinish);
-                firstTask.sendMessageToConentScript(ContentMessageCode.taskEnd);
-            }, function () {
-                firstTask.sendMessageToConentScript(ContentMessageCode.aria2DownloadFail);
-                firstTask.sendMessageToConentScript(ContentMessageCode.taskEnd);
+            ServerManager.shareManager().getCurrentServer(function (success, server) {
+                if (success && server) {
+                    Aria2.shareAria2().batchDownload(aria2Tasks, server.downloadPath, function () {
+                        firstTask.sendMessageToConentScript(ContentMessageCode.aria2DownloadFinish);
+                        firstTask.sendMessageToConentScript(ContentMessageCode.taskEnd);
+                    }, function () {
+                        firstTask.sendMessageToConentScript(ContentMessageCode.aria2DownloadFail);
+                        firstTask.sendMessageToConentScript(ContentMessageCode.taskEnd);
+                    });
+                } else {
+                    instance.sendMessageToConentScript(ContentMessageCode.aria2DownloadFail);
+                    instance.sendMessageToConentScript(ContentMessageCode.taskEnd);
+                }
             });
+
         };
         var _doTask = function () {
-            if (XunleiAPI.xunleiGDriverID == undefined || XunleiAPI.xunleiUserID == undefined){
+            if (XunleiAPI.xunleiGDriverID == undefined || XunleiAPI.xunleiUserID == undefined) {
                 tasks = [];
                 firstTask.sendMessageToConentScript(ContentMessageCode.xunleiloginFail);
                 firstTask.sendMessageToConentScript(ContentMessageCode.taskEnd);
@@ -277,7 +285,7 @@ var XunleiAPI = {
         instance.tasks = tasks;
         firstTask = tasks[0];
         instance.doTasks = function () {
-            if (instance.tasks.length == 0){
+            if (instance.tasks.length == 0) {
                 firstTask.sendMessageToConentScript(ContentMessageCode.taskEnd);
                 return;
             }

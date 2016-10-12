@@ -208,10 +208,13 @@ $(function () {
         $("#update_form").hide();
     });
     $("#server_profile").change(function () {
-        var selectedServerID = $(this).val();
+        var select = $(this);
+        var selectedServerID = select.val();
+        select.attr("disabled", true);
         messageSendToBackground(105, selectedServerID, function (response) {
             messageSendToBackground(103, selectedServerID, function (response) {
                 displayServerOnMainForm(response.message);
+                select.attr("disabled", false);
             });
         });
     });
