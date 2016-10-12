@@ -133,6 +133,13 @@ chrome.runtime.onMessage.addListener(
                 });
                 return true;//异步消息发送
                 break;
+            case 105:
+                //选中某服务器
+                ServerManager.shareManager().setCurrentServerID(request.message);
+                sendResponse({
+                    code:1
+                });
+                break;
             case 200:
                 //迅雷页面单普通任务下载
                 var task = Task.init();

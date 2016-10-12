@@ -3,8 +3,6 @@
  */
 
 $(function () {
-    var selectedServerID = undefined;
-
     function messageSendToBackground(code, message, response) {
         chrome.runtime.sendMessage({
             code: code,
@@ -13,15 +11,12 @@ $(function () {
     }
 
     function init() {
-        refreshMainForm(true);
-
+        refreshMainForm();
     }
 
-    function refreshMainForm(saveCurrentServer) {
+    function refreshMainForm() {
         messageSendToBackground(102, null, function (response) {
-            if (saveCurrentServer) {
-                selectedServerID = response.message.currentServer;
-            }
+            var selectedServerID = response.message.currentServer;
             var servers = response.message.servers;
             var hasSelectedServer = false;
             $("#server_profile").html("");
@@ -73,36 +68,16 @@ $(function () {
         }
     }
 
-    function testServer(setting) {
-        $("#server_version").removeClass(".red");
-        $("#server_version").html("(连接中)");
-        var updatetimer = setInterval(function () {
-            if ($("#server_version").html() == "(连接中)") {
-                $("#server_version").html("(连接中.)");
-            } else if ($("#server_version").html() == "(连接中.)") {
-                $("#server_version").html("(连接中..)");
-            } else if ($("#server_version").html() == "(连接中..)") {
-                $("#server_version").html("(连接中)");
-            }
-        }, 200);
-        messageSendToBackground(100, setting, function (response) {
-            if (response.code == 0) {
-                clearInterval(updatetimer);
-                $("#server_version").html("(连接失败)").addClass(".red");
-                $("#serverUrl").addClass('red');
-            } else {
-                clearInterval(updatetimer);
-                $("#server_version").removeClass(".red").html("(已连接 v" + response.message + ")");
-                $("#serverUrl").removeClass('red');
-            }
-        });
-    }
-
     function refreshProfileList() {
         $("#list_profile_container").html("");
         messageSendToBackground(102, null, function (response) {
             var servers = response.message.servers;
-            if (servers.length == 0) {
+            var serverEmpty = true;
+            for (var i in servers) {
+                serverEmpty = false;
+                break;
+            }
+            if (serverEmpty) {
                 $("#list_profile_no_data").show();
                 return;
             }
@@ -145,18 +120,6 @@ $(function () {
         });
     }
 
-    $("#save").click(function () {
-        var serverUrl = $('#serverUrl').val();
-        var downloadPath = $('#downloadPath').val();
-        testServer({url: serverUrl, downloadPath: downloadPath});
-    });
-    $("#reset").click(function () {
-        messageSendToBackground(101, null, function (response) {
-            $('#serverUrl').val(response.message.serverUrl);
-            $('#downloadPath').val(response.message.downloadPath);
-            testServer()
-        });
-    });
     $("#update_selected_server").click(function () {
         $("#main_form").hide();
         $("#update_server_cancel").show();
@@ -212,10 +175,12 @@ $(function () {
         var li = $(this).parents("li");
         var serverid = $(this).attr("data-serverid");
         messageSendToBackground(104, serverid, function (response) {
+            var licount = li.parent().children("li").length;
             li.remove();
-            if(serverid == selectedServerID) {
-                selectedServerID = undefined;
+            if (licount <= 1) {
+                $("#list_profile_no_data").show();
             }
+
         });
     });
     $("#list_form_back").click(function () {
@@ -229,7 +194,7 @@ $(function () {
         $("#update_server_back").show();
         $("#update_form").show();
         $("#update_server_save").attr("disabled", true);
-        $("#update_server_save").attr("data-serverid","");
+        $("#update_server_save").attr("data-serverid", "");
         $("#update_server_name").val("");
         $("#update_server_url").val("");
         $("#update_server_downloadpath").val("");
@@ -243,9 +208,11 @@ $(function () {
         $("#update_form").hide();
     });
     $("#server_profile").change(function () {
-        selectedServerID = $(this).val();
-        messageSendToBackground(103, selectedServerID, function (response) {
-            displayServerOnMainForm(response.message);
+        var selectedServerID = $(this).val();
+        messageSendToBackground(105, selectedServerID, function (response) {
+            messageSendToBackground(103, selectedServerID, function (response) {
+                displayServerOnMainForm(response.message);
+            });
         });
     });
     $("#update_server_name, #update_server_url").keyup(function () {
@@ -285,14 +252,14 @@ $(function () {
         };
         messageSendToBackground(103, serverID, function (response) {
             var server = undefined;
-            if (response && response.message){
+            if (response && response.message) {
                 server = response.message;
             } else {
                 server = {
-                    id:-1,
-                    name:"",
-                    url:"",
-                    downloadPath:""
+                    id: -1,
+                    name: "",
+                    url: "",
+                    downloadPath: ""
                 };
             }
             if (name == server.name && url == server.url && downloadPath == server.downloadPath) {
@@ -397,7 +364,7 @@ $(function () {
                         serverid: server.id,
                         server: server,
                         reloadaria2: true
-                    }, function(response){
+                    }, function (response) {
                         //设置服务器
                         console.log("ok");
                     });
@@ -406,5 +373,4 @@ $(function () {
         });
     });
     init();
-})
-;
+});

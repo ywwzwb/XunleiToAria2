@@ -46,6 +46,9 @@ var ServerManager = {
             server.id = localStorage.autoInCreaseServerID++;
             var request = objectStore.add(server);
             request.onsuccess = function (event) {
+                if(!parseInt(instance.getCurrentServerID())) {
+                    instance.setCurrentServerID(event.target.result);
+                }
                 callback(true, event.target.result);
             };
         };
@@ -60,6 +63,9 @@ var ServerManager = {
             var objectStore = transaction.objectStore("servers");
             var request = objectStore.delete(serverid);
             request.onsuccess = function (event) {
+                if(serverid == instance.getCurrentServerID()){
+                    instance.setCurrentServerID(0);
+                }
                 callback(true);
             };
         };
