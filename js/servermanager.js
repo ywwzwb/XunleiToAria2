@@ -52,6 +52,7 @@ var ServerManager = {
         instance.removeServer = function (serverid, callback) {
             callback = callback || function () {
                 };
+            serverid = parseInt(serverid);
             var transaction = db.transaction(["servers"], "readwrite");
             transaction.onerror = function (event) {
                 callback(false);

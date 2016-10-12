@@ -76,18 +76,22 @@ chrome.runtime.onMessage.addListener(
                 //保存服务器
                 var serverid = request.message.serverid;
                 if (serverid == -1) {
-                    ServerManager.shareManager().addServer(request.message.server, function(success, serverid) {
+                    //增加
+                    ServerManager.shareManager().addServer(request.message.server, function (success, serverid) {
                         sendResponse({
                             code: 1,
                             message: serverid
                         });
                     });
                 } else {
+                    //修改
                     ServerManager.shareManager().updateServer(request.message.serverid, request.message.server, function (success) {
                         if (request.message.reloadaria2 && request.message.serverid == ServerManager.shareManager().getCurrentServerID()) {
                             Aria2.shareAria2().setUrl(request.message.server.url);
                         }
-                        sendResponse()
+                        sendResponse({
+                            code: 1
+                        });
                     });
                 }
 
@@ -116,6 +120,15 @@ chrome.runtime.onMessage.addListener(
                     sendResponse({
                         code: 1,
                         message: server
+                    });
+                });
+                return true;//异步消息发送
+                break;
+            case 104:
+                //删除某服务器
+                ServerManager.shareManager().removeServer(request.message, function (success) {
+                    sendResponse({
+                        code: 1
                     });
                 });
                 return true;//异步消息发送
