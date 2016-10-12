@@ -13,9 +13,33 @@ chrome.contextMenus.create({
     "title": "直接下载到 Aria2",
     "contexts": ["link", "image", "video", "audio"]
 });
+
+
 ServerManager.shareManager();//先调用 ServerManager的初始化方法初始化数据库
 chrome.runtime.onInstalled.addListener(function (previousVersion) {
     setTimeout(function () {
+        //弹出chrome通知
+        function showNotification(id, opt) {
+            var notification = chrome.notifications.create(id, opt, function (notifyId) {
+                return notifyId;
+            });
+            setTimeout(function () {
+                chrome.notifications.clear(id, function () {
+                });
+            }, 5000);
+        }
+        //软件版本更新提示
+        console.log(previousVersion.previousVersion);
+        if (previousVersion.previousVersion) {
+            var opt = {
+                type: "basic",
+                title: "更新",
+                message: "更新啦! 现在可以配置多个服务器了 !",
+                iconUrl: "image/icon-128.png"
+            };
+            var id = new Date().getTime().toString();
+            showNotification(id, opt);
+        }
         //没有配置的情况下, 弹出设置框
         if (!ServerManager.shareManager().getCurrentServerID()) {
             chrome.runtime.openOptionsPage();
