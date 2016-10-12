@@ -197,6 +197,7 @@ $(function () {
     $("#list_form_back").click(function () {
         $("#main_form").show();
         $("#list_profile").hide();
+        refreshMainForm();
     });
     $("#list_form_create").click(function () {
         $("#list_profile").hide();
