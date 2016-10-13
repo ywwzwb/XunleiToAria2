@@ -10,7 +10,9 @@ var Aria2 = {
         var _successCallBack = {};
         var _failCallBack = {};
         var _uid = 1;
+        var _url = "";
         instance.url = "";
+
         instance.serverGood = undefined;
         instance.token = undefined;
         instance.serverAddr = undefined;
@@ -43,6 +45,7 @@ var Aria2 = {
                 callback(false, "URL Error");
                 return;
             }
+            _url = url;
             var result = reg.exec(url);
             instance.token = result[1];
             url = url.replace("token:" + instance.token + "@", "");
@@ -96,13 +99,25 @@ var Aria2 = {
                     instance.serverGood = false;
                     callback(false, "connect error");
                 })
-            }
+            };
+
         };
         //success: function(msg:String)
         //error: function()
         instance.sendRequest = function (method, param, success, fail) {
-            if (instance.serverGood == false || _socket.readyState != 1) {
+            if (instance.serverGood == false ){
                 fail();
+                return;
+            }
+            if( _socket.readyState != 1 ){
+                console.warn("server close,try reconnect");
+                instance.setUrl(_url, function(success2, version){
+                    if (success2){
+                        instance.sendRequest(method, param, success, fail);
+                    } else {
+                        fail();
+                    }
+                });
                 return;
             }
             if (!param) {
@@ -130,11 +145,21 @@ var Aria2 = {
         };
 
         instance.sendBatchRequest = function (method, params, success, fail) {
-            if (instance.serverGood == false || _socket.readyState != 1) {
+            if (instance.serverGood == false ){
                 fail();
                 return;
             }
-
+            if( _socket.readyState != 1 ){
+                console.warn("server close,try reconnect");
+                instance.setUrl(_url, function(success2, version){
+                    if (success2){
+                        instance.sendBatchRequest(method, params, success, fail);
+                    } else {
+                        fail();
+                    }
+                });
+                return;
+            }
             if (!params || params.length == 0) {
                 success();
                 return;
@@ -229,6 +254,11 @@ var Aria2 = {
                 function (result) {
                     success(result.version);
                 }, fail);
+        };
+        instance.close = function(){
+            if (_socket){
+                _socket.close();
+            }
         };
 
         return instance;

@@ -29,12 +29,11 @@ chrome.runtime.onInstalled.addListener(function (previousVersion) {
             }, 5000);
         }
         //软件版本更新提示
-        console.log(previousVersion.previousVersion);
         if (previousVersion.previousVersion) {
             var opt = {
                 type: "basic",
                 title: "更新",
-                message: "更新啦! 现在可以配置多个服务器了 !",
+                message: "更新啦! 现在可以配置多个服务器了!",
                 iconUrl: "image/icon-128.png"
             };
             var id = new Date().getTime().toString();
@@ -94,12 +93,13 @@ chrome.runtime.onMessage.addListener(
         switch (request.code) {
             case 100:
                 //测试服务器连接
-                Aria2.init().setUrl(request.message, function (success, version) {
+                var aria2 = Aria2.init().setUrl(request.message, function (success, version) {
                     if (success) {
                         sendResponse({code: 1, message: version});
                     } else {
                         sendResponse({code: 0});
                     }
+                    aria2.close();
                 });
                 return true;//异步消息发送
                 break;
