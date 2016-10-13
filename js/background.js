@@ -33,7 +33,7 @@ chrome.runtime.onInstalled.addListener(function (previousVersion) {
             var opt = {
                 type: "basic",
                 title: "更新",
-                message: "更新啦! 现在可以配置多个服务器了!",
+                message: "更新啦! 修改了网络原因服务器中断后, 不能下载的问题!",
                 iconUrl: "image/icon-128.png"
             };
             var id = new Date().getTime().toString();
