@@ -73,7 +73,6 @@ chrome.runtime.onInstalled.addListener(function (previousVersion) {
                 });
             }, 5000);
         }
-
         //软件版本更新提示
         if (previousVersion.previousVersion) {
             var opt = {
@@ -108,7 +107,7 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
             chrome.tabs.insertCSS({
                 "file": "css/insert.css"
             }, function () {
-                var url = info.srcUrl ? info.srcUrl : info.linkUrl;
+                var url = info.linkUrl ? info.linkUrl : info.srcUrl;
                 var task = Task.init();
                 task.url = url;
                 task.tabid = tab.id;

@@ -4,7 +4,6 @@
     <list default="true" id="e822d445-3753-4c23-9728-cf8515f8a402" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/background.js" afterPath="$PROJECT_DIR$/js/background.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/servermanager.js" afterPath="$PROJECT_DIR$/js/servermanager.js" />
     </list>
     <ignored path="xunleitoaria2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,8 +28,8 @@
       <file leaf-file-name="background.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/background.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2555">
-              <caret line="246" column="47" selection-start-line="246" selection-start-column="47" selection-end-line="246" selection-end-column="47" />
+            <state relative-caret-position="300">
+              <caret line="110" column="39" selection-start-line="110" selection-start-column="39" selection-end-line="110" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -949,8 +948,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/background.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2555">
-          <caret line="246" column="47" selection-start-line="246" selection-start-column="47" selection-end-line="246" selection-end-column="47" />
+        <state relative-caret-position="300">
+          <caret line="110" column="39" selection-start-line="110" selection-start-column="39" selection-end-line="110" selection-end-column="39" />
           <folding />
         </state>
       </provider>
