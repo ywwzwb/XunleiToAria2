@@ -2,20 +2,65 @@
  * Created by zengwenbin on 16/9/12.
  */
 
-chrome.contextMenus.removeAll();//先要清空之前设置的菜单
-chrome.contextMenus.create({
-    "id": "xunleitoaria2_downloadoverxunlei",
-    "title": "使用迅雷下载到 Aria2",
-    "contexts": ["link", "image", "video", "audio"]
-});
-chrome.contextMenus.create({
-    "id": "xunleitoaria2_downloadirectly",
-    "title": "直接下载到 Aria2",
-    "contexts": ["link", "image", "video", "audio"]
-});
+
+function createMenu() {
+    return (new Promise(function (resolve) {
+        chrome.contextMenus.removeAll(resolve);//先要清空之前设置的菜单
+    })).then(function () {
+        return new Promise(function (resolve) {
+            chrome.contextMenus.create({
+                "id": "xunleitoaria2_downloadoverxunlei",
+                "title": "使用迅雷下载到 Aria2",
+                "contexts": ["link", "image", "video", "audio"]
+            }, resolve);
+        })
+    }).then(function () {
+        return new Promise(function (resolve) {
+            chrome.contextMenus.create({
+                "id": "xunleitoaria2_downloadirectly",
+                "title": "直接下载到 Aria2",
+                "contexts": ["link", "image", "video", "audio"]
+            }, resolve);
+        })
+    })
+}
+
+function initdb(){
+    return new Promise(function (resolve, reject) {
+        return ServerManager.shareManager(function(success){
+            if (success){
+                resolve()
+            } else {
+                reject()
+            }
+        });//先调用 ServerManager的初始化方法初始化数据库
+    })
+}
+function initServer() {
+    return new Promise(function(resolve){
+        ServerManager.shareManager().getCurrentServer(function (success, server) {
+        if (success) {
+            Aria2.shareAria2().setUrl(server.url, function (success, version) {
+                if (success) {
+                    server.version = version;
+                } else {
+                    server.version = -1;
+                }
+                ServerManager.shareManager().updateServer(server.id, server, resolve);
+            });
+        } else {
+            console.warn("服务器获取失败");
+            resolve()
+        }
+    });
+    })
+}
+
+createMenu().then(initdb).then(initServer);
 
 
-ServerManager.shareManager();//先调用 ServerManager的初始化方法初始化数据库
+
+
 chrome.runtime.onInstalled.addListener(function (previousVersion) {
     setTimeout(function () {
         //弹出chrome通知
@@ -28,6 +73,7 @@ chrome.runtime.onInstalled.addListener(function (previousVersion) {
                 });
             }, 5000);
         }
+
         //软件版本更新提示
         if (previousVersion.previousVersion) {
             var opt = {
@@ -45,22 +91,7 @@ chrome.runtime.onInstalled.addListener(function (previousVersion) {
         }
     }, 300);
 });
-setTimeout(function () {
-    ServerManager.shareManager().getCurrentServer(function (success, server) {
-        if (success) {
-            Aria2.shareAria2().setUrl(server.url, function (success, version) {
-                if (success) {
-                    server.version = version;
-                } else {
-                    server.version = -1;
-                }
-                ServerManager.shareManager().updateServer(server.id, server);
-            });
-        } else {
-            console.warn("服务器获取失败");
-        }
-    });
-}, 300);
+
 chrome.browserAction.onClicked.addListener(function () {
     chrome.tabs.create({
         url: "http://lixian.xunlei.com"

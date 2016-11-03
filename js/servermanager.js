@@ -3,7 +3,7 @@
  */
 
 var ServerManager = {
-    init: function () {
+    init: function (callback) {
         var instance = {};
         var db = undefined;
         if (!localStorage.autoInCreaseServerID) {
@@ -11,9 +11,17 @@ var ServerManager = {
         }
         var request = indexedDB.open("ServerList", 1);
         request.onerror = function (event) {
+            if (callback){
+                callback(false);
+            }
+            callback = undefined;
             console.error("打开数据库出错");
         };
         request.onsuccess = function (event) {
+            if (callback){
+                callback(true);
+            }
+            callback = undefined;
             db = this.result;
         };
         request.onupgradeneeded = function (event) {
@@ -131,9 +139,9 @@ var ServerManager = {
         return instance;
     },
     _shareManager: undefined,
-    shareManager: function () {
+    shareManager: function (callback) {
         if (ServerManager._shareManager == undefined) {
-            ServerManager._shareManager = ServerManager.init()
+            ServerManager._shareManager = ServerManager.init(callback)
         }
         return ServerManager._shareManager;
     }
