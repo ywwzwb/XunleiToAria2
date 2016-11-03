@@ -96,7 +96,7 @@ chrome.runtime.onInstalled.addListener(function (previousVersion) {
             var opt = {
                 type: "basic",
                 title: "更新",
-                message: "更新啦! 修改了网络原因服务器中断后, 不能下载的问题!",
+                message: "更新啦! 修改了以下 bug\n1. 一直提示服务器连接失败 \n2. 第一次下载会一直卡在加载中",
                 iconUrl: "image/icon-128.png"
             };
             var id = new Date().getTime().toString();

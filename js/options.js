@@ -19,8 +19,10 @@ $(function () {
             var selectedServerID = response.message.currentServer;
             var servers = response.message.servers;
             var hasSelectedServer = false;
+            var noServer = true;
             $("#server_profile").html("");
             for (var serverid in servers) {
+                noServer = false
                 var server = servers[serverid];
                 if (serverid == selectedServerID) {
                     hasSelectedServer = true;
@@ -29,7 +31,12 @@ $(function () {
                 $("<option>").val(server.id).text(server.name).appendTo($("#server_profile"));
             }
             $("#server_profile").val(selectedServerID);
-            if (!hasSelectedServer) {
+
+            if (noServer) {
+                $("#no_selected_server_span").hide();
+                $("#no_any_server_span").show();
+
+            } else if (!hasSelectedServer) {
                 $("#selected_server_span").hide();
                 $("#no_selected_server_span").show();
             }
@@ -193,13 +200,11 @@ $(function () {
         $("#update_server_cancel").hide();
         $("#update_server_back").show();
         $("#update_form").show();
-        $("#update_server_save").attr("disabled", true);
-        $("#update_server_save").attr("data-serverid", "");
+        $("#update_server_save").attr("disabled", true).attr("data-serverid", "");
         $("#update_server_name").val("");
         $("#update_server_url").val("");
+        $("#update_server_downloadupdate_server_downloadpathpath").val("");
         $("#update_server_downloadpath").val("");
-        $("#update_server_downloadpath").val("");
-        $("#update_server_error").hide().text("");
         $("#update_server_error").hide().text("");
         $("#update_server_info").hide().text("");
     });
