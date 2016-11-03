@@ -82,7 +82,7 @@ function onXunleiJB() {
     $("#xunleitoaria2div>.box>.yzmform").hide();
 }
 function onXunleiDownloadDoing() {
-    $("#xunleitoaria2div .title").text("迅雷远程下载中, 请稍后再试");
+    $("#xunleitoaria2div .title").text("迅雷远程下载中, 请耐心等待");
     $("#xunleitoaria2div>.box>.yzmform").hide();
 }
 function onAria2DownloadFinish() {

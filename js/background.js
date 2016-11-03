@@ -18,8 +18,16 @@ function createMenu() {
         return new Promise(function (resolve) {
             chrome.contextMenus.create({
                 "id": "xunleitoaria2_downloadirectly",
-                "title": "直接下载到 Aria2",
+                "title": "直接下载链接到 Aria2",
                 "contexts": ["link", "image", "video", "audio"]
+            }, resolve);
+        })
+    }).then(function () {
+        return new Promise(function (resolve) {
+            chrome.contextMenus.create({
+                "id": "xunleitoaria2_downloadimage",
+                "title": "直接下载图片到 Aria2",
+                "contexts": ["image"]
             }, resolve);
         })
     })
@@ -107,11 +115,22 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
             chrome.tabs.insertCSS({
                 "file": "css/insert.css"
             }, function () {
-                var url = info.linkUrl ? info.linkUrl : info.srcUrl;
+                var url = info.linkUrl;
                 var task = Task.init();
                 task.url = url;
                 task.tabid = tab.id;
-                task.directDownloadTask = info.menuItemId == "xunleitoaria2_downloadirectly";
+                switch (info.menuItemId){
+                    case "xunleitoaria2_downloadimage":
+                        task.directDownloadTask = true;
+                        task.url = info.srcUrl;
+                        break;
+                    case  "xunleitoaria2_downloadirectly":
+                        task.directDownloadTask = true;
+                        break;
+                    default:
+                        task.directDownloadTask = false;
+                        break;
+                }
                 task.doTask();
             });
         })
