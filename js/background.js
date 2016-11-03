@@ -2,8 +2,13 @@
  * Created by zengwenbin on 16/9/12.
  */
 
-
+console.timelog = function(str){
+    var d = new Date();
+    console.log(d.toLocaleString()+": "+str);
+};
+var initDone = false;
 function createMenu() {
+    console.timelog("开始创建菜单");
     return (new Promise(function (resolve) {
         chrome.contextMenus.removeAll(resolve);//先要清空之前设置的菜单
     })).then(function () {
@@ -33,10 +38,11 @@ function createMenu() {
     })
 }
 
-function initdb(){
+function initdb() {
+    console.timelog("开始初始化数据库");
     return new Promise(function (resolve, reject) {
-        return ServerManager.shareManager(function(success){
-            if (success){
+        return ServerManager.shareManager(function (success) {
+            if (success) {
                 resolve()
             } else {
                 reject()
@@ -44,29 +50,32 @@ function initdb(){
         });//先调用 ServerManager的初始化方法初始化数据库
     })
 }
+
 function initServer() {
-    return new Promise(function(resolve){
+    console.timelog("开始初始化服务器");
+    return new Promise(function (resolve) {
         ServerManager.shareManager().getCurrentServer(function (success, server) {
-        if (success) {
-            Aria2.shareAria2().setUrl(server.url, function (success, version) {
-                if (success) {
-                    server.version = version;
-                } else {
-                    server.version = -1;
-                }
-                ServerManager.shareManager().updateServer(server.id, server, resolve);
-            });
-        } else {
-            console.warn("服务器获取失败");
-            resolve()
-        }
-    });
+            if (success) {
+                console.timelog("获取到服务器");
+                Aria2.shareAria2().setUrl(server.url, function (success, version) {
+                    if (success) {
+                        server.version = version;
+                    } else {
+                        server.version = -1;
+                    }
+                    ServerManager.shareManager().updateServer(server.id, server, resolve);
+                });
+            } else {
+                console.timelog("服务器获取失败");
+                resolve()
+            }
+        });
     })
 }
 
-createMenu().then(initdb).then(initServer);
-
-
+createMenu().then(initdb).then(initServer).then(function(){
+    initDone = true;
+});
 
 
 chrome.runtime.onInstalled.addListener(function (previousVersion) {
@@ -81,6 +90,7 @@ chrome.runtime.onInstalled.addListener(function (previousVersion) {
                 });
             }, 5000);
         }
+
         //软件版本更新提示
         if (previousVersion.previousVersion) {
             var opt = {
@@ -104,8 +114,14 @@ chrome.browserAction.onClicked.addListener(function () {
         url: "http://lixian.xunlei.com"
     });
 });
-chrome.contextMenus.onClicked.addListener(function (info, tab) {
-    // var menuid = info.menuItemId
+
+function onContextMenuClicked(info, tab){
+    if(!initDone) {
+        setTimeout(function(){
+            onContextMenuClicked(info, tab)
+        }, 100);
+        return;
+    }
     chrome.tabs.executeScript({
         file: "js/jquery-3.1.0.min.js"
     }, function () {
@@ -119,7 +135,7 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
                 var task = Task.init();
                 task.url = url;
                 task.tabid = tab.id;
-                switch (info.menuItemId){
+                switch (info.menuItemId) {
                     case "xunleitoaria2_downloadimage":
                         task.directDownloadTask = true;
                         task.url = info.srcUrl;
@@ -135,11 +151,18 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
             });
         })
     });
-});
+}
 
-chrome.runtime.onMessage.addListener(
-    function (request, sender, sendResponse) {
-        switch (request.code) {
+chrome.contextMenus.onClicked.addListener(onContextMenuClicked);
+
+function onMessage(request, sender, sendResponse){
+    if(!initDone) {
+        setTimeout(function(){
+            onMessage(request, sender, sendResponse)
+        }, 100);
+        return true;
+    }
+     switch (request.code) {
             case 100:
                 //测试服务器连接
                 var aria2 = Aria2.init().setUrl(request.message, function (success, version) {
@@ -279,5 +302,6 @@ chrome.runtime.onMessage.addListener(
             default:
                 break;
         }
-    }
-);
+}
+
+chrome.runtime.onMessage.addListener(onMessage);

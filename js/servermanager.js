@@ -11,20 +11,22 @@ var ServerManager = {
         }
         var request = indexedDB.open("ServerList", 1);
         request.onerror = function (event) {
-            if (callback){
+            if (callback) {
                 callback(false);
             }
             callback = undefined;
-            console.error("打开数据库出错");
+            console.timelog("打开数据库出错");
         };
         request.onsuccess = function (event) {
-            if (callback){
+            console.timelog("打开数据库完成");
+            if (callback) {
                 callback(true);
             }
             callback = undefined;
             db = this.result;
         };
         request.onupgradeneeded = function (event) {
+            console.timelog("数据库更新");
             var db = event.target.result;
             var objectStore = db.createObjectStore("servers", {keyPath: "id"});
             if (localStorage.serverUrl) {
@@ -54,7 +56,7 @@ var ServerManager = {
             server.id = localStorage.autoInCreaseServerID++;
             var request = objectStore.add(server);
             request.onsuccess = function (event) {
-                if(!parseInt(instance.getCurrentServerID())) {
+                if (!parseInt(instance.getCurrentServerID())) {
                     instance.setCurrentServerID(event.target.result);
                 }
                 callback(true, event.target.result);
@@ -71,7 +73,7 @@ var ServerManager = {
             var objectStore = transaction.objectStore("servers");
             var request = objectStore.delete(serverid);
             request.onsuccess = function (event) {
-                if(serverid == instance.getCurrentServerID()){
+                if (serverid == instance.getCurrentServerID()) {
                     instance.setCurrentServerID(0);
                 }
                 callback(true);
