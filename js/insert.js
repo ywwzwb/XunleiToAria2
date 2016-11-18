@@ -22,18 +22,21 @@ if ($("#xunleitoaria2hidden").length == 0) {
                 onXunleiDownloadDoing();
                 break;
             case 5:
-                onXunleiLoginFail();
+                onXunleiDownloadFail();
                 break;
             case 6:
-                onAria2DownloadFinish();
+                onXunleiLoginFail();
                 break;
             case 7:
-                onAria2DownloadFail();
+                onAria2DownloadFinish();
                 break;
             case 8:
-                onAria2DownloadFailNotsupportEd2k();
+                onAria2DownloadFail();
                 break;
             case 9:
+                onAria2DownloadFailNotsupportEd2k();
+                break;
+            case 10:
                 onTaskDone();
                 break;
             default:
@@ -85,6 +88,10 @@ function onXunleiDownloadDoing() {
     $("#xunleitoaria2div .title").text("迅雷远程下载中, 请耐心等待");
     $("#xunleitoaria2div>.box>.yzmform").hide();
 }
+function onXunleiDownloadFail() {
+    $("#xunleitoaria2div .title").text("迅雷远程下载失败了, 换一个资源吧");
+    $("#xunleitoaria2div>.box>.yzmform").hide();
+}
 function onAria2DownloadFinish() {
     $("#xunleitoaria2div .title").text("下载成功");
     $("#xunleitoaria2div>.box>.yzmform").hide();
@@ -103,7 +110,7 @@ function onAria2DownloadFail() {
     }, 1000);
 }
 function onXunleiLoginFail() {
-    $("#xunleitoaria2div .title").text("请先登录");
+    $("#xunleitoaria2div .title").text("登录状态过期了");
     $("#xunleitoaria2div>.box>.yzmform").hide();
     setTimeout(function () {
         window.open("http://lixian.xunlei.com", "_blank");

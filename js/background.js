@@ -90,13 +90,13 @@ chrome.runtime.onInstalled.addListener(function (previousVersion) {
                 });
             }, 5000);
         }
-
+        console.log(previousVersion.previousVersion);
         //软件版本更新提示
         if (previousVersion.previousVersion) {
             var opt = {
                 type: "basic",
                 title: "更新",
-                message: "更新啦! 修改了网络原因服务器中断后, 不能下载的问题!",
+                message: "更新啦! \n修改了部分种子资源下载会丢失部分文件的 bug \n修改了一个提示下载成功却下载失败的 bug!",
                 iconUrl: "image/icon-128.png"
             };
             var id = new Date().getTime().toString();

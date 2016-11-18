@@ -80,13 +80,13 @@ $(function () {
             case 0:
                 showDiv();
                 break;
-            case 6:
+            case 7:
                 onAria2DownloadFinish();
                 break;
-            case 7:
+            case 8:
                 onAria2DownloadFail();
                 break;
-            case 9:
+            case 10:
                 onTaskDone();
                 break;
             default:

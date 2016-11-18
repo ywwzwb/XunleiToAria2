@@ -8,11 +8,12 @@ var ContentMessageCode = {
     xunleiDownloadFinish: 2,
     xunleiZYJB: 3,//资源被举报
     xunleiDownloading: 4,
-    xunleiloginFail: 5,
-    aria2DownloadFinish: 6,
-    aria2DownloadFail: 7,
-    aria2DownloadFailNotSupportEd2k: 8,
-    taskEnd: 9
+    xunleiDownloadFail: 5,
+    xunleiloginFail: 6,
+    aria2DownloadFinish: 7,
+    aria2DownloadFail: 8,
+    aria2DownloadFailNotSupportEd2k: 9,
+    taskEnd: 10
 };
 
 var Task = {

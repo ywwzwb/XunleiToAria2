@@ -28,7 +28,7 @@ var XunleiAPI = {
                         task.sendMessageToConentScript(ContentMessageCode.xunleiloginFail);
                         instance.tasks = [];
                         task.sendMessageToConentScript(ContentMessageCode.taskEnd);
-                        return
+                        return;
                     }
                     var taskinfo = function () {
                         var result = output.replace(/queryUrl\(/g, "[").replace(/new Array\(/g, "[").replace(/\)/g, "]").replace(/\',/g, "\",").replace(/,\'/g, ",\"").replace(/\[\'/g, "[\"").replace(/\'\]/g, "\"]").replace(/\\/g, "\\\\");
@@ -40,6 +40,7 @@ var XunleiAPI = {
                         param.goldbean = 0;
                         param.silverbean = 0;
                         param.tsize = json[2];
+                        param.success = json[0] == 1;
                         var sizeArr = json[7];
                         var sizeArrCount = sizeArr.length;
                         var findexArr = [];
@@ -54,6 +55,12 @@ var XunleiAPI = {
                         param.interfrom = "task";
                         return param;
                     }();
+                    if (!taskinfo.success){
+                        task.sendMessageToConentScript(ContentMessageCode.xunleiDownloadFail);
+                        instance.tasks = [];
+                        task.sendMessageToConentScript(ContentMessageCode.taskEnd);
+                        return;
+                    }
                     commitMagnetTask(taskinfo, callback, task);
                 }
             });
@@ -89,7 +96,7 @@ var XunleiAPI = {
                 type: "GET",
                 data: {
                     tid: id,
-                    g_net: 1,
+                    g_net: 2,
                     uid: XunleiAPI.xunleiUserID,
                     callback: "jsonp1"
                 },
