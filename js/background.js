@@ -96,7 +96,7 @@ chrome.runtime.onInstalled.addListener(function (previousVersion) {
             var opt = {
                 type: "basic",
                 title: "更新",
-                message: "更新啦! \n修改了部分种子资源下载会丢失部分文件的 bug \n修改了一个提示下载成功却下载失败的 bug!",
+                message: "更新啦! \n设置界面默认隐藏 token 了, 截图给小伙伴也不用担心泄露你的密码了!",
                 iconUrl: "image/icon-128.png"
             };
             var id = new Date().getTime().toString();

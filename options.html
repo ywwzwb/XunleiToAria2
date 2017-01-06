@@ -26,11 +26,14 @@
             overflow-x: hidden;
             overflow-y: auto;
         }
+        .use_point_cursor {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-
 <div style="width: 450px;margin: 0 auto;padding: 20px;">
+    <!--设置首页-->
     <div class="form-group" id="main_form">
         <label class="control-label" for="server_profile">选择服务器配置
             <button class="btn btn-primary btn-xs" id="profile_list">
@@ -41,7 +44,9 @@
         </select>
         <span class="help-block">
             <span id="selected_server_span" style="display: none">
-                服务器地址: <span id="selected_server_url" class="longtextspan"></span><br/>
+                服务器地址:
+                <span id="selected_server_url" class="longtextspan use_point_cursor" style="display: none"></span>
+                <span id="selected_server_url_mask" class="longtextspan use_point_cursor"></span><br/>
                 服务器版本: <span id="selected_server_version"></span> <button class="btn btn-primary btn-xs"
                                                                           id="test_selected_server"
                                                                           data-serverid="">测试</button><br/>
@@ -52,6 +57,7 @@
             <span id="no_any_server_span" style="display: none">还没有服务器, 点击管理添加一个吧!</span>
         </span>
     </div>
+    <!--修改, 新建服务器-->
     <div id="update_form" style="display: none">
         <div class="form-group">
             <label class="control-label" for="update_server_name">服务器名称</label>
@@ -74,6 +80,7 @@
         <button class="btn btn-success" id="update_server_cancel" style="display: none">取消</button>
         <button class="btn btn-success" id="update_server_back" style="display: none">返回</button>
     </div>
+     <!--服务器列表-->
     <div id="list_profile" style="display: none">
         <h4>配置列表</h4>
         <ul class="list-group" id="list_profile_container">
