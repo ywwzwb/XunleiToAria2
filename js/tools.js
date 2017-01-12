@@ -9,11 +9,11 @@ function functionCallToJSONArr(functionCall){
     var paramArr = params.split(",");
     var result = [];
     for (var i in paramArr) {
-        var param = paramArr[i].trim()
+        var param = paramArr[i].trim().unescape();
         if(param.match(/^[\'\"].*[\'\"]$/)) {
             result.push(param.replace(/^[\'\"](.*)[\'\"]$/, "$1"))
         } else if (param.startsWith("new")){
-            param = param.replace(" ", "_")
+            param = param.replace(" ", "_");
             result.push(functionCallToJSONArr(param));
         } else {
             result.push(param)
@@ -21,4 +21,11 @@ function functionCallToJSONArr(functionCall){
     }
     return result;
 }
+String.prototype.unescape = function(){
+  return this.replace(/\\'/g, "\'")
+      .replace(/\\"/g, "\'")
+      .replace(/\\\&/g, "\&")
+      .replace(/\\\\/g, "\\")
+      .replace(/\[nrtbf]/g, " ");
+};
 // functionCallToJSONArr("queryUrl(1,'OPHBHI4PKPP56NUPNT7ZLJSHGO2AZ3LO','1214296705','[WMSUB][Detective Conan][Episode\'ONE\'][20161209][BIG5][1080P].mp4','0',new Array('[WMSUB][Detective Conan][Episode\'ONE\'][20161209][BIG5][1080P].mp4'),new Array('1.13G'),new Array('1214296705'),new Array('1'),new Array('WMA'),new Array('0'),new Array('0'),'1484198454','0')");
