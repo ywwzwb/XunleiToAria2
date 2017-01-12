@@ -31,17 +31,16 @@ var XunleiAPI = {
                         return;
                     }
                     var taskinfo = function () {
-                        var result = output.replace(/queryUrl\(/g, "[").replace(/new Array\(/g, "[").replace(/\)/g, "]").replace(/\',/g, "\",").replace(/,\'/g, ",\"").replace(/\[\'/g, "[\"").replace(/\'\]/g, "\"]").replace(/\\/g, "\\\\");
-                        var json = JSON.parse(result);
+                        var result = functionCallToJSONArr(output);
                         var param = {};
                         param.uid = XunleiAPI.xunleiUserID;
-                        param.btname = json[3];
-                        param.cid = json[1];
+                        param.btname = result[3];
+                        param.cid = result[1];
                         param.goldbean = 0;
                         param.silverbean = 0;
-                        param.tsize = json[2];
-                        param.success = json[0] == 1;
-                        var sizeArr = json[7];
+                        param.tsize = result[2];
+                        param.success = result[0] == 1;
+                        var sizeArr = result[7];
                         var sizeArrCount = sizeArr.length;
                         var findexArr = [];
                         for (var i = 0; i < sizeArrCount; i++) {
@@ -140,16 +139,15 @@ var XunleiAPI = {
                             return
                         }
                         var taskinfo = function () {
-                            var result = output.replace(/queryCid\(/g, "[").replace(/new Array\(/g, "[").replace(/\)/g, "]").replace(/\' *,/g, "\",").replace(/, *\'/g, ",\"").replace(/\[\ *'/g, "[\"").replace(/\' *\]/g, "\"]").replace(/\\/g, "\\\\");
-                            var json = JSON.parse(result);
+                            var result = functionCallToJSONArr(output);
                             var param = {};
                             param.uid = XunleiAPI.xunleiUserID;
-                            param.cid = json[0];
-                            param.gcid = json[1];
-                            param.size = json[2];
+                            param.cid = result[0];
+                            param.gcid = result[1];
+                            param.size = result[2];
                             param.silverbean = 0;
                             param.goldbean = 0;
-                            param.t = json[4];
+                            param.t = result[4];
                             param.url = task.url;
                             if (task.url.startsWith("thunder://")) {
                                 param.type = 3;
@@ -180,19 +178,18 @@ var XunleiAPI = {
                 data: taskinfo,
                 success: function (output, status, xhr) {
                     //ret_task(1,'1542067162259968','0.17468810081482')
-                    var result = output.replace(/ret_task\(/g, "[").replace(/new Array\(/g, "[").replace(/\)/g, "]").replace(/\' *,/g, "\",").replace(/, *\'/g, ",\"").replace(/\[\ *'/g, "[\"").replace(/\' *\]/g, "\"]").replace(/\\/g, "\\\\");
-                    output = JSON.parse(result);
+                    var result = functionCallToJSONArr(output);
                     //
-                    if (output[0] == -12 || output[0] == -11) {
+                    if (result[0] == -12 || result[0] == -11) {
                         // -12 表示需要输入验证码, -11 表示验证码错误
                         task.sendMessageToConentScript(ContentMessageCode.xunleiShowYZM, undefined, function (response) {
                             taskinfo.verify_code = response.message;
                             normalTaskCommit(taskinfo, callback, task);
                         });
-                    } else if (output[0] == 1) {
+                    } else if (result[0] == 1) {
                         task.sendMessageToConentScript(ContentMessageCode.xunleiDownloadFinish);
-                        getNormalTaskInfo(taskinfo.cid, output[1], callback, task);
-                    } else if (output[0] == 2) {
+                        getNormalTaskInfo(taskinfo.cid, result[1], callback, task);
+                    } else if (result[0] == 2) {
                         //资源被举报
                         task.sendMessageToConentScript(ContentMessageCode.xunleiZYJB);
                         callback();

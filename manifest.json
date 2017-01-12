@@ -19,6 +19,7 @@
   "background": {
     "scripts": [
       "js/jquery-3.1.0.min.js",
+      "js/tools.js",
       "js/aria2.js",
       "js/xunleiapi.js",
       "js/task.js",
