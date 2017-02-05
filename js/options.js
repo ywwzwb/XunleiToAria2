@@ -35,7 +35,7 @@ $(function () {
             if (noServer) {
                 $("#no_selected_server_span").hide();
                 $("#no_any_server_span").show();
-
+                $("#selected_server_span").hide();
             } else if (!hasSelectedServer) {
                 $("#selected_server_span").hide();
                 $("#no_selected_server_span").show();
@@ -46,6 +46,7 @@ $(function () {
     function displayServerOnMainForm(server) {
         $("#selected_server_span").show();
         $("#no_selected_server_span").hide();
+        $("#no_any_server_span").hide();
         var urlwithmask = server.url.replace(/token:(.+)@/, "token:***@");
         $("#selected_server_url").text(server.url);
         $("#selected_server_url_mask").text(urlwithmask);

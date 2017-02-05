@@ -16,6 +16,7 @@ var ContentMessageCode = {
     taskEnd: 10
 };
 
+
 var Task = {
     init: function () {
         var instance = {};

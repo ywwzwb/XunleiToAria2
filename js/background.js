@@ -171,7 +171,6 @@ function onMessage(request, sender, sendResponse){
                     } else {
                         sendResponse({code: 0});
                     }
-                    aria2.close();
                 });
                 return true;//异步消息发送
                 break;
