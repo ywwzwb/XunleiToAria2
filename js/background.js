@@ -96,7 +96,7 @@ chrome.runtime.onInstalled.addListener(function (previousVersion) {
             var opt = {
                 type: "basic",
                 title: "更新",
-                message: "更新啦! \n设置界面默认隐藏 token 了, 截图给小伙伴也不用担心泄露你的密码了!",
+                message: "更新啦! \n修改了由于Cookie 设置错误导致下载失败的问题",
                 iconUrl: "image/icon-128.png"
             };
             var id = new Date().getTime().toString();

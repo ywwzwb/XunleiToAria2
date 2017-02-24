@@ -112,7 +112,7 @@ var XunleiAPI = {
                     $.each(tasks, function () {
                         aria2Tasks.push({
                             name: (btname + "/" + this.title).replace(/\\\/?/g, "/"),
-                            header: "Cookie:" + XunleiAPI.xunleiGDriverID,
+                            header: "Cookie:gdriveid=" + XunleiAPI.xunleiGDriverID,
                             url: this.downurl
                         })
                     });
@@ -224,7 +224,7 @@ var XunleiAPI = {
                         if (taskjson && taskjson.progress == 100 && taskjson.lixian_url) {
                             aria2Tasks.push({
                                 name: taskjson.taskname.replace(/\\\/?/g, "/"),
-                                header: "Cookie:" + XunleiAPI.xunleiGDriverID,
+                                header: "Cookie:gdriveid=" + XunleiAPI.xunleiGDriverID,
                                 url: taskjson.lixian_url
                             });
                             callback()
@@ -273,7 +273,7 @@ var XunleiAPI = {
             if (task.isLixanUrl) {
                 aria2Tasks.push({
                     name: task.taskname.replace(/\\/g, ""),
-                    header: "Cookie:" + XunleiAPI.xunleiGDriverID,
+                    header: "Cookie:gdriveid=" + XunleiAPI.xunleiGDriverID,
                     url: task.url
                 });
                 _doTask();
