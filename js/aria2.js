@@ -39,7 +39,7 @@ var Aria2 = {
             } else if (url.startsWith("http")) {
                 url = url.replace("http", "ws");
             }
-            var reg = /\/\/token:(\w+)@([\w.]+):(\d+)\//;
+            var reg = /\/\/token:([\w-]+)@[\w.-]+(:\d+)?\//;
             if (!reg.test(url)) {
                 instance.serverGood = false;
                 callback(false, "URL Error");
