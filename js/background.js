@@ -96,7 +96,7 @@ chrome.runtime.onInstalled.addListener(function (previousVersion) {
             var opt = {
                 type: "basic",
                 title: "更新",
-                message: "更新啦! \n修改了由于Cookie 设置错误导致下载失败的问题",
+                message: "更新啦! \n修改了某些特殊 url 添加失败的 bug",
                 iconUrl: "image/icon-128.png"
             };
             var id = new Date().getTime().toString();
@@ -173,7 +173,6 @@ function onMessage(request, sender, sendResponse){
                     }
                 });
                 return true;//异步消息发送
-                break;
             case 101:
                 //保存服务器
                 var serverid = request.message.serverid;
@@ -198,7 +197,6 @@ function onMessage(request, sender, sendResponse){
                 }
 
                 return true;//异步消息发送
-                break;
             case 102:
                 //获取当前所有服务器配置
                 ServerManager.shareManager().getAllServers(function (success, servers) {
@@ -211,7 +209,6 @@ function onMessage(request, sender, sendResponse){
                     });
                 });
                 return true;//异步消息发送
-                break;
             case 103:
                 //获取某服务器配置
                 if (!request.message) {
@@ -225,7 +222,6 @@ function onMessage(request, sender, sendResponse){
                     });
                 });
                 return true;//异步消息发送
-                break;
             case 104:
                 //删除某服务器
                 ServerManager.shareManager().removeServer(request.message, function (success) {
@@ -234,7 +230,6 @@ function onMessage(request, sender, sendResponse){
                     });
                 });
                 return true;//异步消息发送
-                break;
             case 105:
                 //选中某服务器
                 ServerManager.shareManager().setCurrentServerID(request.message);
@@ -258,7 +253,6 @@ function onMessage(request, sender, sendResponse){
                     }
                 });
                 return true;//异步消息发送
-                break;
             case 200:
                 //迅雷页面单普通任务下载
                 var task = Task.init();
