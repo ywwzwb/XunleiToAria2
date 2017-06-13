@@ -3,7 +3,7 @@
  */
 
 $(function () {
-    function messageSendToBackground(code, message, response) {
+    function messageSendToBackground(code, message, response = null) {
         chrome.runtime.sendMessage({
             code: code,
             message: message
@@ -11,11 +11,15 @@ $(function () {
     }
 
     function init() {
+        $("#main_form").hide();
+        $("#loading_progress_bar").show();
         refreshMainForm();
     }
     // 刷新主界面
     function refreshMainForm() {
         messageSendToBackground(102, null, function (response) {
+            $("#main_form").show();
+            $("#loading_progress_bar").hide();
             var selectedServerID = response.message.currentServer;
             var servers = response.message.servers;
             var hasSelectedServer = false;
@@ -31,7 +35,6 @@ $(function () {
                 $("<option>").val(server.id).text(server.name).appendTo($("#server_profile"));
             }
             $("#server_profile").val(selectedServerID);
-
             if (noServer) {
                 $("#no_selected_server_span").hide();
                 $("#no_any_server_span").show();
@@ -50,10 +53,10 @@ $(function () {
         var urlwithmask = server.url.replace(/token:(.+)@/, "token:***@");
         $("#selected_server_url").text(server.url);
         $("#selected_server_url_mask").text(urlwithmask);
-        var version = server.version;
-        if (version == 0) {
+        var version = parseFloat(server.version);
+        if (version < 0.01 && version > -0.01) {
             $("#selected_server_version").text("未知版本");
-        } else if (version == -1) {
+        } else if (version < -0.01 || isNaN(version)) {
             $("#selected_server_version").text("连接错误");
         } else {
             $("#selected_server_version").text(version);
@@ -73,10 +76,13 @@ $(function () {
         $("#update_server_url").val(server.url);
         $("#update_server_downloadpath").val(server.downloadPath);
         $("#update_server_save").attr("data-serverid", server.id);
+        $("#update_server_save_force").attr("data-serverid", server.id);
         if (backtoserverlist) {
             $("#update_server_save").attr("data-backtoserverlist", "1");
+            $("#update_server_save_force").attr("data-backtoserverlist", "1");
         } else {
             $("#update_server_save").attr("data-backtoserverlist", "0");
+            $("#update_server_save_force").attr("data-backtoserverlist", "0");
         }
     }
     // 刷新服务器列表
@@ -140,12 +146,11 @@ $(function () {
         var select = $(this);
         var selectedServerID = select.val();
         select.attr("disabled", true);
-        messageSendToBackground(105, selectedServerID, function (response) {
-            messageSendToBackground(103, selectedServerID, function (response) {
+        messageSendToBackground(105, selectedServerID);
+        messageSendToBackground(103, selectedServerID, function (response) {
                 displayServerOnMainForm(response.message);
                 select.attr("disabled", false);
             });
-        });
     });
     // 主页的修改服务器按钮
     $("#update_selected_server").click(function () {
@@ -154,6 +159,8 @@ $(function () {
         $("#update_server_back").hide();
         $("#update_form").show();
         $("#update_server_save").attr("disabled", false);
+        $("#update_server_save").show();
+        $("#update_server_save_force").hide();
         $("#update_server_error").hide().text("");
         $("#update_server_info").hide().text("");
         messageSendToBackground(103, $(this).attr("data-serverid"), function (response) {
@@ -171,8 +178,9 @@ $(function () {
         $("#selected_server_url").show();
     });
     // 主界面点击测试服务器
-    $(document).on("click", ".list_profile_test, #test_selected_server", function () {
+     $(document).on("click", ".list_profile_test, #test_selected_server", function () {
         var versionspan = $(this).prev();
+        $(this).attr("disabled", true);
         var timer = setInterval(function () {
             switch (versionspan.text()) {
                 case "连接中":
@@ -189,8 +197,10 @@ $(function () {
                     break;
             }
         }, 200);
+        var thisBtn = this;
         messageSendToBackground(103, $(this).attr("data-serverid"), function (response) {
             //获取服务器信息
+            $(thisBtn).attr("disabled", false);
             var server = response.message;
             messageSendToBackground(100, server.url, function (response) {
                 // 测试服务器(服务器有时太快了, 延迟1秒调用)
@@ -242,13 +252,15 @@ $(function () {
         $(this).parents(".list-group-item").children("hr").hide();
         $(this).parents(".list-group-item").children("p").hide();
     });
-    // 列举服务器里面的更新服务器按钮
+    // 列举服务器里面的修改服务器按钮
     $(document).on("click", ".list_profile_update", function () {
         $("#list_profile").hide();
         $("#update_server_cancel").hide();
         $("#update_server_back").show();
         $("#update_form").show();
         $("#update_server_save").attr("disabled", false);
+        $("#update_server_save").show();
+        $("#update_server_save_force").hide();
         $("#update_server_error").hide().text("");
         $("#update_server_info").hide().text("");
         messageSendToBackground(103, $(this).attr("data-serverid"), function (response) {
@@ -288,7 +300,10 @@ $(function () {
         $("#update_server_cancel").hide();
         $("#update_server_back").show();
         $("#update_form").show();
-        $("#update_server_save").attr("disabled", true).attr("data-serverid", "");
+        $("#update_server_save").attr("disabled", true).attr("data-serverid", "").attr("data-backtoserverlist", "1");
+        $("#update_server_save_force").attr("data-serverid", "").attr("data-backtoserverlist", "1");
+        $("#update_server_save").show();
+        $("#update_server_save_force").hide();
         $("#update_server_name").val("");
         $("#update_server_url").val("");
         $("#update_server_downloadupdate_server_downloadpathpath").val("");
@@ -373,6 +388,7 @@ $(function () {
                         back();
                     });
                 } else {
+                    $("#update_server_save").attr("disabled", true);
                     // 测试url 是否可以连接
                     $("#update_server_info").show();
                     // 连接中动画
@@ -393,6 +409,7 @@ $(function () {
                         }
                     }, 200);
                     messageSendToBackground(100, url, function (response) {
+                        $("#update_server_save").attr("disabled", false);
                         clearInterval(timer);
                         if (response.code == 1) {
                             $("#update_server_info").text("已连接, 版本" + response.message);
@@ -414,14 +431,56 @@ $(function () {
                             }, 1000);
                         } else {
                             $("#update_server_info").hide();
-                            $("#update_server_error").show().text("连接错误");
+                            $("#update_server_error").show().html("连接错误");
+                            $("#update_server_save").hide();
+                            $("#update_server_save_force").show();
                         }
                     });
                 }
             }
         });
     });
-
-
+    $("#update_server_save_force").click(function () {
+        var serverID = parseInt($(this).attr("data-serverid"));
+        if (serverID == 0 || isNaN(serverID)) {
+            serverID = -1;
+        }
+        var name = $("#update_server_name").val().trim();
+        var url = $("#update_server_url").val().trim();
+        var downloadPath = $("#update_server_downloadpath").val().trim();
+        var server = {
+            id: serverID,
+            name: name,
+            url: url,
+            downloadPath: downloadPath
+        };
+        // 判断是返回主界面还是服务器列表界面
+        var backtolist = $(this).attr("data-backtoserverlist") == 1 || serverID.length == 0;
+        var reloadUI = function () {
+            if (backtolist) {
+                refreshProfileList();
+            } else {
+                refreshMainForm();
+            }
+        };
+        var back = function () {
+            if (backtolist) {
+                $("#list_profile").show();
+                $("#update_form").hide();
+            } else {
+                $("#main_form").show();
+                $("#update_form").hide();
+            }
+        };
+        // 直接保存
+        messageSendToBackground(101, {
+            serverid: server.id,
+            server: server,
+            reloadaria2: true
+        }, function () {
+            reloadUI();
+            back();
+        });
+    });
     init();
 });

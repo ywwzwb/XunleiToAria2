@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <script src="js/jquery-3.1.0.min.js" type="text/javascript"></script>
@@ -8,87 +9,97 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <title>设置</title>
     <style>
-        td, .longtextspan {
+        td,
+        .longtextspan {
             word-break: break-all;
         }
 
         .radio-container {
             margin-right: 5px;
         }
+
         .operate-btn-group-right {
             float: right;
         }
-        .list-group-item > input[type="radio"]{
+
+        .list-group-item>input[type="radio"] {
             margin-right: 5px;
         }
+
         #list_profile_container {
             max-height: 200px;
             overflow-x: hidden;
             overflow-y: auto;
         }
+
         .use_point_cursor {
             cursor: pointer;
         }
     </style>
 </head>
+
 <body>
-<div style="width: 450px;margin: 0 auto;padding: 20px;">
-    <!--设置首页-->
-    <div class="form-group" id="main_form">
-        <label class="control-label" for="server_profile">选择服务器配置
+    <div id="loading_progress_bar" class="progress" style="width: 80%; margin: 30px auto 0px auto; display:none;">
+        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+            style="width: 100%">
+        </div>
+    </div>
+    <div style="width: 450px;margin: 0 auto;padding: 20px;">
+        <!--设置首页-->
+        <div class="form-group" id="main_form">
+            <label class="control-label" for="server_profile">选择服务器配置
             <button class="btn btn-primary btn-xs" id="profile_list">
                 管理
             </button>
         </label>
-        <select class="form-control" id="server_profile">
+            <select class="form-control" id="server_profile">
         </select>
-        <span class="help-block">
+            <span class="help-block">
             <span id="selected_server_span" style="display: none">
                 服务器地址:
                 <span id="selected_server_url" class="longtextspan use_point_cursor" style="display: none"></span>
-                <span id="selected_server_url_mask" class="longtextspan use_point_cursor"></span><br/>
-                服务器版本: <span id="selected_server_version"></span> <button class="btn btn-primary btn-xs"
-                                                                          id="test_selected_server"
-                                                                          data-serverid="">测试</button><br/>
-                下载路径: <span id="selected_server_downloadpath" class="longtextspan"></span><br/>
-                <button class="btn btn-primary btn-xs" id="update_selected_server" data-serverid="">修改</button>
+            <span id="selected_server_url_mask" class="longtextspan use_point_cursor"></span><br/> 服务器版本: <span id="selected_server_version"></span>            <button class="btn btn-primary btn-xs" id="test_selected_server" data-serverid="">测试</button><br/> 下载路径:
+            <span id="selected_server_downloadpath" class="longtextspan"></span><br/>
+            <button class="btn btn-primary btn-xs" id="update_selected_server" data-serverid="">修改</button>
             </span>
             <span id="no_selected_server_span" style="display: none">没有选择任何服务器, 从上面选择一个吧!</span>
             <span id="no_any_server_span" style="display: none">还没有服务器, 点击管理添加一个吧!</span>
-        </span>
-    </div>
-    <!--修改, 新建服务器-->
-    <div id="update_form" style="display: none">
-        <div class="form-group">
-            <label class="control-label" for="update_server_name">服务器名称</label>
-            <input class="form-control" id="update_server_name" type="text">
-            <span class="help-block">如:客厅的下载器</span>
+            </span>
         </div>
-        <div class="form-group">
-            <label class="control-label" for="update_server_url">服务器地址</label>
-            <input class="form-control" id="update_server_url" type="text">
-            <span class="help-block">注意: 仅支持 token 验证模式. <br/>如: http://token:12345@localhost:6800/jsonrpc</span>
+        <!--修改, 新建服务器-->
+        <div id="update_form" style="display: none">
+            <div class="form-group">
+                <label class="control-label" for="update_server_name">服务器名称</label>
+                <input class="form-control" id="update_server_name" type="text">
+                <span class="help-block">如:客厅的下载器</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="update_server_url">服务器地址</label>
+                <input class="form-control" id="update_server_url" type="text">
+                <span class="help-block">注意: 仅支持 token 验证模式. <br/>如: http://token:12345@localhost:6800/jsonrpc</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="update_server_downloadpath">下载路径</label>
+                <input class="form-control" id="update_server_downloadpath" type="text">
+                <span class="help-block">注意: 请输入绝对路径, 留空使用默认值</span>
+            </div>
+            <div class="alert alert-danger" id="update_server_error" role="alert" style="display: none"></div>
+            <div class="alert alert-info" id="update_server_info" role="alert" style="display: none"></div>
+            <button class="btn btn-primary" id="update_server_save" data-serverid="" data-backtoserverlist="0">保存</button>
+            <button class="btn btn-warning" id="update_server_save_force" data-serverid="" data-backtoserverlist="0" style="display: none">仍然保存</button>
+            <button class="btn btn-success" id="update_server_cancel" style="display: none">取消</button>
+            <button class="btn btn-success" id="update_server_back" style="display: none">返回</button>
         </div>
-        <div class="form-group">
-            <label class="control-label" for="update_server_downloadpath">下载路径</label>
-            <input class="form-control" id="update_server_downloadpath" type="text">
-            <span class="help-block">注意: 请输入绝对路径, 留空使用默认值</span>
+        <!--服务器列表-->
+        <div id="list_profile" style="display: none">
+            <h4>配置列表</h4>
+            <ul class="list-group" id="list_profile_container">
+            </ul>
+            <p id="list_profile_no_data" style="display: none">无</p>
+            <button class="btn btn-primary" id="list_form_create">新建</button>
+            <button class="btn btn-success" id="list_form_back">返回</button>
         </div>
-        <div class="alert alert-danger" id="update_server_error" role="alert" style="display: none"></div>
-        <div class="alert alert-info" id="update_server_info" role="alert" style="display: none"></div>
-        <button class="btn btn-primary" id="update_server_save" data-serverid="" data-backtoserverlist = "0">保存</button>
-        <button class="btn btn-success" id="update_server_cancel" style="display: none">取消</button>
-        <button class="btn btn-success" id="update_server_back" style="display: none">返回</button>
     </div>
-     <!--服务器列表-->
-    <div id="list_profile" style="display: none">
-        <h4>配置列表</h4>
-        <ul class="list-group" id="list_profile_container">
-        </ul>
-        <p id="list_profile_no_data" style="display: none">无</p>
-        <button class="btn btn-primary" id="list_form_create">新建</button>
-        <button class="btn btn-success" id="list_form_back">返回</button>
-    </div>
-</div>
 </body>
+
 </html>
