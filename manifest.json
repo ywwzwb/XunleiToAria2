@@ -14,7 +14,7 @@
     "contextMenus",
     "cookies",
     "notifications",
-    "http://dynamic.cloud.vip.xunlei.com/"
+    "*://*.xunlei.com/*"
   ],
   "background": {
     "scripts": [
@@ -35,7 +35,7 @@
   "content_scripts": [
     {
       "matches": [
-        "http://dynamic.cloud.vip.xunlei.com/*"
+        "http://lixian.xunlei.com/xl9/space.html"
       ],
       "css": [
         "css/xunlei-insert.css",

@@ -78,40 +78,40 @@ createMenu().then(initdb).then(initServer).then(function(){
 });
 
 
-chrome.runtime.onInstalled.addListener(function (previousVersion) {
-    setTimeout(function () {
-        //弹出chrome通知
-        function showNotification(id, opt) {
-            var notification = chrome.notifications.create(id, opt, function (notifyId) {
-                return notifyId;
-            });
-            setTimeout(function () {
-                chrome.notifications.clear(id, function () {
-                });
-            }, 5000);
-        }
-        console.log(previousVersion.previousVersion);
-        //软件版本更新提示
-        if (previousVersion.previousVersion) {
-            var opt = {
-                type: "basic",
-                title: "更新",
-                message: "更新啦! \n修改了某些特殊 url 添加失败的 bug",
-                iconUrl: "image/icon-128.png"
-            };
-            var id = new Date().getTime().toString();
-            showNotification(id, opt);
-        }
-        //没有配置的情况下, 弹出设置框
-        if (!ServerManager.shareManager().getCurrentServerID()) {
-            chrome.runtime.openOptionsPage();
-        }
-    }, 300);
-});
+// chrome.runtime.onInstalled.addListener(function (previousVersion) {
+//     setTimeout(function () {
+//         //弹出chrome通知
+//         function showNotification(id, opt) {
+//             var notification = chrome.notifications.create(id, opt, function (notifyId) {
+//                 return notifyId;
+//             });
+//             setTimeout(function () {
+//                 chrome.notifications.clear(id, function () {
+//                 });
+//             }, 5000);
+//         }
+//         console.log(previousVersion.previousVersion);
+//         //软件版本更新提示
+//         if (previousVersion.previousVersion) {
+//             var opt = {
+//                 type: "basic",
+//                 title: "更新",
+//                 message: "更新啦! \n现在连接失败的服务器也可以添加了",
+//                 iconUrl: "image/icon-128.png"
+//             };
+//             var id = new Date().getTime().toString();
+//             showNotification(id, opt);
+//         }
+//         //没有配置的情况下, 弹出设置框
+//         if (!ServerManager.shareManager().getCurrentServerID()) {
+//             chrome.runtime.openOptionsPage();
+//         }
+//     }, 300);
+// });
 
 chrome.browserAction.onClicked.addListener(function () {
     chrome.tabs.create({
-        url: "http://lixian.xunlei.com"
+        url: "http://lixian.xunlei.com/xl9/space.html"
     });
 });
 

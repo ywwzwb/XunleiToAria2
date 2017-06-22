@@ -11,7 +11,6 @@ if ($("#xunleitoaria2hidden").length == 0) {
             case 1:
                 showYZMInput(response);
                 return true;//异步消息
-                break;
             case 2:
                 onXunleiDownloadFinish();
                 break;
