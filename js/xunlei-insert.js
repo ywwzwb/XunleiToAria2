@@ -19,7 +19,7 @@ $(function () {
     batch_download.click(function () {
     });
     var refreshListInterval = setInterval(function () {
-        if ($(".files_list").length > 0 || $(".vip_compare").length > 0 || $(".file_empty:visable").length > 0) {
+        if ($(".files_list").length > 0 || $(".vip_compare").length > 0) {
             var task_opt_bar_download = $('<a href="javascript:;" title="标记喜欢" class="ico_file ico_f_fav  j-task-coll task_download"></a>');
             task_opt_bar_download.prependTo($(".files_list .file_opt"));
             clearInterval(refreshListInterval);
@@ -34,6 +34,18 @@ $(function () {
             task_opt_bar_download.prependTo($(this).find(".file_opt"));
         }
     });
+    // 右键菜单下载
+    $(document).on("mousedown", ".files_list", function(event){
+        setTimeout(function(){
+            if(event.which == 3) {// 右键单击
+                if ($(".j-task-aria2".length == 0)) {
+                    var menu_download = $('<li><a href="javascript:;"  class="j-task-aria2">下载到 Aria2</a></li>');
+                    menu_download.insertBefore($(".drop_more_m>ul>li:eq(1)"));
+                }
+            }
+        }, 1);
+    })
+    
     // var task_opt_bar_download = $('<a href="javascript:;" title="标记喜欢" class="ico_file ico_f_fav  j-task-coll"></a>');
     // task_opt_bar_download.prependTo($(".file_opt"));
     // btn.click(function () {
