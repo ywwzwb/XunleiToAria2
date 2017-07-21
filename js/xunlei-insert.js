@@ -7,7 +7,7 @@ $(function () {
     // 添加批量下载按钮
     var batch_download = $('<a href="javascript:;" class="btn_files btn_dis batch_aria2"><span>下载到 Aria2</span></a>');
     batch_download.insertBefore($(".opt_btn>a[clickid=batch_delete]"));
-    $(document).on("click", ".j-chk-all,.chk_file", function () {
+    $(document).on("click", ".j-chk-all,.j-file-chk", function () {
         setTimeout(function () {
             if ($(".chk_file.checked").length > 0) {
                 batch_download.removeClass("btn_dis");
