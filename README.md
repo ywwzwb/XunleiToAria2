@@ -1,3 +1,6 @@
+# 此版本删除了右键菜单中的使用迅雷下载到 Aria2
+
+via [thekingofcity](https://github.com/thekingofcity/XunleiToAria2)
 
 # 迅雷远程下载已关闭,  今后将无法使用 
 [新闻报道](http://www.cnbeta.com/articles/tech/638775.htm)
