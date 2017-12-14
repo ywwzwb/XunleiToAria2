@@ -14,14 +14,6 @@ function createMenu() {
     })).then(function () {
         return new Promise(function (resolve) {
             chrome.contextMenus.create({
-                "id": "xunleitoaria2_downloadoverxunlei",
-                "title": "使用迅雷下载到 Aria2",
-                "contexts": ["link", "image", "video", "audio"]
-            }, resolve);
-        })
-    }).then(function () {
-        return new Promise(function (resolve) {
-            chrome.contextMenus.create({
                 "id": "xunleitoaria2_downloadirectly",
                 "title": "直接下载链接到 Aria2",
                 "contexts": ["link", "image", "video", "audio"]
