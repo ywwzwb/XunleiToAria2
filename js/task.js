@@ -60,7 +60,7 @@ var Task = {
 
                 }
             } else {
-                XunleiAPI.init(instance).doTasks()
+                //XunleiAPI.init(instance).doTasks()
             }
         };
         instance.sendMessageToConentScript = function (code, message, response) {
